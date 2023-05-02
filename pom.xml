@@ -16,7 +16,7 @@
     </organization>
 
     <properties>
-        <magnoliaVersion>6.2.7</magnoliaVersion>
+        <magnoliaVersion>6.2.12</magnoliaVersion>
         <magnolia.content-types.version>1.2</magnolia.content-types.version>
         <magnolia.site.version>1.4</magnolia.site.version>
         <qrgen.version>1.4</qrgen.version>
