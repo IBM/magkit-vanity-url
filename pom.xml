@@ -42,6 +42,11 @@
                     <groupId>commons-lang</groupId>
                     <artifactId>commons-lang</artifactId>
                 </exclusion>
+                <!-- get rid of transitive missing vaadin-server.rc1 pom -->
+                <exclusion>
+                    <groupId>com.vaadin.addon</groupId>
+                    <artifactId>date-range-field</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
