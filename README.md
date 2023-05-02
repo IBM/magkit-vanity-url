@@ -1,5 +1,4 @@
-Magnolia Vanity-URL App
-=======================
+# Magnolia Vanity-URL App
 
 [![Build Status](https://travis-ci.com/aperto/magnolia-vanity-url.svg?branch=master)](https://travis-ci.com/aperto/magnolia-vanity-url) 
 [![Magnolia compatibility](https://img.shields.io/badge/magnolia-5.4-brightgreen.svg)](https://www.magnolia-cms.com)
@@ -42,7 +41,7 @@ For example:
 
 ### Maven artifacts in Magnolia's Nexus
 
-The code is built on [Travis CI](https://travis-ci.com/aperto/magnolia-vanity-url).
+The code is built on [Travis CI](https://app.travis-ci.com/github/IBM/magkit-vanity-url).
 You can browse available artifacts through [Magnolia's Nexus](https://nexus.magnolia-cms.com/#nexus-search;quick~magnolia-vanity-url)
 
 ### Maven dependency
