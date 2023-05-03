@@ -2,9 +2,11 @@ name: build-module
 run-name: ${{ github.actor }} triggered module build
 on:
   push:
-    branches: [ $default-branch ]
+    branches:
+      - 'main'
   pull_request:
-    branches: [ $default-branch ]
+    branches:
+      - 'main'
 jobs:
   build:
     runs-on: ubuntu-latest
