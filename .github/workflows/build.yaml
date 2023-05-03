@@ -1,4 +1,4 @@
-name: build-module
+name: build
 run-name: ${{ github.actor }} triggered module build
 on:
   push:

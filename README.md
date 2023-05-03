@@ -1,6 +1,6 @@
 # Magnolia Vanity-URL App
 
-[![Build Status](https://api.travis-ci.com/IBM/magkit-vanity-url.svg?branch=main&status=passed)](https://app.travis-ci.com/github/IBM/magkit-vanity-url) 
+[![build-module](https://github.com/IBM/magkit-vanity-url/actions/workflows/build.yaml/badge.svg)](https://github.com/IBM/magkit-vanity-url/actions/workflows/build.yaml) 
 [![Magnolia compatibility](https://img.shields.io/badge/magnolia-5.4-brightgreen.svg)](https://www.magnolia-cms.com)
 [![Magnolia compatibility](https://img.shields.io/badge/magnolia-5.5-brightgreen.svg)](https://www.magnolia-cms.com)
 [![Magnolia compatibility](https://img.shields.io/badge/magnolia-5.6-brightgreen.svg)](https://www.magnolia-cms.com)
