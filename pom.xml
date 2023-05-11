@@ -10,6 +10,9 @@
     <version>1.6.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>magnolia-vanity-url Magnolia Module</name>
+
+    <inceptionYear>2013</inceptionYear>
+
     <properties>
         <qrgen.version>1.4</qrgen.version>
     </properties>
