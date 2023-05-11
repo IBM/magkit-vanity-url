@@ -87,23 +87,6 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <extensions>
-            <!-- see http://maven.apache.org/pom.html#Extensions -->
-            <extension>
-                <!--
-                    aperto-build-tools contain the checkstyle-rules-lax-javadoc.xml
-                    referenced by our checkstyle configuration
-                    see https://confluence.ibmix.de/pages/viewpage.action?pageId=2951965
-                -->
-                <groupId>com.ibmix.magkit</groupId>
-                <artifactId>ibmix-build-tools</artifactId>
-                <version>0.9</version>
-            </extension>
-        </extensions>
-    </build>
-
-
     <scm>
         <url>https://github.com/IBM/magkit-vanity-url.git</url>
         <connection>scm:git:https://github.com/IBM/magkit-vanity-url.git</connection>
