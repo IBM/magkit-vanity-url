@@ -15,7 +15,6 @@
 
     <properties>
         <qrgen.version>1.4</qrgen.version>
-        <checkstyle.config>com/de/ibmix</checkstyle.config>
     </properties>
 
     <dependencies>
