@@ -17,10 +17,24 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
-          cache: maven
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
       - name: Create settings.xml
         run: |
           mkdir -p ~/.m2
           echo "<settings><servers><server><id>magnolia.forge.snapshots</id><username>${{secrets.MGNL_USERNAME}}</username><password>${{secrets.MGNL_PASSWORD}}</password></server></servers></settings>" > ~/.m2/settings.xml
       - name: Build and Deploy with Maven
-        run: mvn clean deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -B deploy org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=IBM_magkit-vanity-url
