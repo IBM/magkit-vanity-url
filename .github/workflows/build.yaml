@@ -12,19 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: Set up JDK 11
         uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'temurin'
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
@@ -36,7 +28,4 @@ jobs:
           mkdir -p ~/.m2
           echo "<settings><servers><server><id>magnolia.forge.snapshots</id><username>${{secrets.MGNL_USERNAME}}</username><password>${{secrets.MGNL_PASSWORD}}</password></server></servers></settings>" > ~/.m2/settings.xml
       - name: Build and Deploy with Maven
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B deploy org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=IBM_magkit-vanity-url
+        run: mvn -B deploy
