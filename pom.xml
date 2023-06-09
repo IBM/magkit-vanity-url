@@ -105,4 +105,12 @@
         <tag>HEAD</tag>
     </scm>
 
+    <repositories>
+        <repository>
+            <id>magnolia.community</id>
+            <name>Magnolia Public Repository</name>
+            <url>https://nexus.magnolia-cms.com/content/groups/public/</url>
+        </repository>
+    </repositories>
+
 </project>
