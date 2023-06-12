@@ -29,7 +29,7 @@ jobs:
           echo "<settings><servers><server><id>magnolia.forge.snapshots</id><username>${{secrets.MGNL_USERNAME}}</username><password>${{secrets.MGNL_PASSWORD}}</password></server></servers></settings>" > ~/.m2/settings.xml
       - name: Build PR with Maven
         if: ${{ github.base_ref == 'main' }}
-        run: mvn -B clean package
+        run: mvn -B clean verify
       - name: Build and Deploy main branch with Maven
         if: ${{ github.base_ref == null }}
         run: mvn -B clean deploy
