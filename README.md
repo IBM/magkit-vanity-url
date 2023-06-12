@@ -41,7 +41,7 @@ For example:
 
 ### Maven artifacts in Magnolia's Nexus
 
-The code is built on [Travis CI](https://app.travis-ci.com/github/IBM/magkit-vanity-url).
+The code is built by [GitHub actions](https://github.com/IBM/magkit-vanity-url/actions/workflows/build.yaml).
 You can browse available artifacts through [Magnolia's Nexus](https://nexus.magnolia-cms.com/#nexus-search;quick~magnolia-vanity-url)
 
 ### Maven dependency
