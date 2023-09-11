@@ -32,6 +32,7 @@
                     <artifactId>date-range-field</artifactId>
                 </exclusion>
             </exclusions>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>info.magnolia.core</groupId>
