@@ -96,9 +96,9 @@
 
     <repositories>
         <repository>
-            <id>magnolia.community</id>
-            <name>Magnolia Public Repository</name>
-            <url>https://nexus.magnolia-cms.com/content/groups/public/</url>
+            <id>magnolia.enterprise</id>
+            <name>Magnolia Enterprise Group</name>
+            <url>https://nexus.magnolia-cms.com/content/groups/enterprise/</url>
         </repository>
     </repositories>
 
