@@ -54,8 +54,8 @@ You can browse available artifacts through [Magnolia's Nexus](https://nexus.magn
     </dependency>
 ```
 
-### Versions
------------------
+#### Versions
+
 * Version 1.2.x is compatible with Magnolia 5.2.x
 * Version 1.3.x is compatible with Magnolia 5.3.x
 * Version 1.4.x is compatible with Magnolia 5.4.x and 5.5.x
@@ -64,12 +64,22 @@ You can browse available artifacts through [Magnolia's Nexus](https://nexus.magn
 
 ### Magnolia Module Configuration
 
-In the module configuration of the vanity url module, you can configure the following settings:
+You can configure the following settings in the module configuration by JCR or yaml:
 * _excludes_ : Pattern of urls, which are no candidates for vanity urls.
   * by default an exclude for all urls containing a dot is configured, that prevents the virtual uri mapping checks every ordinary request like script.js or page.html 
 * _publicUrlService_ : Implementation of _com.aperto.magnolia.vanity.PublicUrlService_. Two implementations are already available.
   * _com.aperto.magnolia.vanity.DefaultPublicUrlService_ (default) : Use of default base url and site configuration with context path replacement.
-  * _com.aperto.magnolia.vanity.SimplePublicUrlService_ : Used configured public prefix and removes the author context path.
+  * _com.aperto.magnolia.vanity.SimplePublicUrlService_ : Uses configured public prefix and removes the author context path.
+* _headlessEndpoint_ : is used for headless support and defines the pages rest endpoint which should be checked for vanity urls
+
+#### Headless support (with version 1.6.1)
+
+For using the headless support you have to decorate the default vanity url virtual uri mapping. It is also possible to define an additional virtual uri mapping 
+if you want to support both renderings. All you need is the following yaml which you can place in your module as decoration of the vanity url module 
+(your-module/decorations/magnolia-vanity-url/virtualUriMappings) or as own virtual uri mapping (your-module/virtualUriMappings).
+```yaml
+class: com.aperto.magnolia.vanity.HeadlessVirtualVanityUriMapping
+```
 
 ## License
 
@@ -84,9 +94,3 @@ If you would like to see the detailed LICENSE click [here](LICENSE).
 # SPDX-License-Identifier: Apache2.0
 #
 ```
-## Authors
-
-Optionally, you may include a list of authors, though this is redundant with the built-in
-GitHub list of contributors.
-
-- Author: Frank Sommer <frank.sommer1@ibm.com>

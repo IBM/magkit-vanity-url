@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 - migrate the project to IBM open source GitHub 
+- add headless support
 
 ## [1.6.0] - 2021-10-01
 
