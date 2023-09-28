@@ -9,9 +9,9 @@ package com.aperto.magnolia.vanity;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -73,9 +73,10 @@ public class VirtualVanityUriMapping implements VirtualUriMapping {
     public Optional<Result> mapUri(final URI uri) {
         Optional<Result> result = Optional.empty();
         try {
-            String vanityUrl = uri.getPath();
+            String vanityUrl = extractPath(uri);
             if (isVanityCandidate(vanityUrl)) {
-                String toUri = getUriOfVanityUrl(vanityUrl);
+                final String siteName = retrieveSite(vanityUrl);
+                String toUri = getUriOfVanityUrl(siteName, vanityUrl);
                 if (isNotBlank(toUri)) {
                     result = Optional.of(new Result(toUri, vanityUrl.length(), this));
                 }
@@ -84,6 +85,10 @@ public class VirtualVanityUriMapping implements VirtualUriMapping {
             LOGGER.error("A vanity url exclude pattern is not set correctly.", e);
         }
         return result;
+    }
+
+    protected String extractPath(URI uri) {
+        return uri.getPath();
     }
 
     protected boolean isVanityCandidate(String uri) {
@@ -104,8 +109,7 @@ public class VirtualVanityUriMapping implements VirtualUriMapping {
         return uri.length() <= 1;
     }
 
-    protected String getUriOfVanityUrl(final String vanityUrl) {
-        final String siteName = retrieveSite();
+    protected String getUriOfVanityUrl(String siteName, final String vanityUrl) {
         Node node = null;
 
         try {
@@ -130,7 +134,7 @@ public class VirtualVanityUriMapping implements VirtualUriMapping {
         return _vanityUrlService.get().createRedirectUrl(node);
     }
 
-    private String retrieveSite() {
+    protected String retrieveSite(String vanityUrl) {
         String siteName = DEF_SITE;
 
         if (_moduleRegistry.get().isModuleRegistered("multisite")) {
@@ -144,5 +148,13 @@ public class VirtualVanityUriMapping implements VirtualUriMapping {
     @Override
     public boolean isValid() {
         return _vanityUrlService.get() != null;
+    }
+
+    public VanityUrlModule getVanityUrlModule() {
+        return _vanityUrlModule.get();
+    }
+
+    public VanityUrlService getVanityUrlService() {
+        return _vanityUrlService.get();
     }
 }

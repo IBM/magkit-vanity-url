@@ -9,9 +9,9 @@ package com.aperto.magnolia.vanity;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -91,6 +91,17 @@ public class VanityUrlService {
      * @return redirect url
      */
     protected String createRedirectUrl(final Node node) {
+        return createRedirectUrl(node, false);
+    }
+
+    /**
+     * Creates the redirect url for uri mapping.
+     * Without context path, because of Magnolia's {@link info.magnolia.cms.util.RequestDispatchUtil}.
+     *
+     * @param node vanity url node
+     * @return redirect url
+     */
+    protected String createRedirectUrl(final Node node, final boolean asExternal) {
         String result;
         String type = getString(node, PN_TYPE, EMPTY);
         String prefix;
@@ -98,7 +109,7 @@ public class VanityUrlService {
             result = createForwardLink(node);
             prefix = FORWARD_PREFIX;
         } else {
-            result = createTargetLink(node);
+            result = createTargetLink(node, asExternal);
             prefix = "301".equals(type) ? PERMANENT_PREFIX : REDIRECT_PREFIX;
         }
         if (isNotEmpty(result)) {
@@ -137,41 +148,52 @@ public class VanityUrlService {
      * @return preview url
      */
     public String createPreviewUrl(final Node node) {
-        return createTargetLink(node);
+        return createTargetLink(node, false);
     }
 
     private String createForwardLink(final Node node) {
         // nearly the same functionality as in createTargetLink. the only difference
         // is the clearing of the url if an external url had been configured
-        return createTargetLink(node, true);
+        return createTargetLink(node, true, false);
     }
 
-    private String createTargetLink(final Node node) {
-        return createTargetLink(node, false);
+    private String createTargetLink(final Node node, final boolean asExternal) {
+        return createTargetLink(node, false, asExternal);
     }
 
-    private String createTargetLink(final Node node, final boolean isForward) {
+    private String createTargetLink(final Node node, final boolean isForward, final boolean asExternal) {
         String url = EMPTY;
         if (node != null) {
-            url = getString(node, PN_LINK, EMPTY);
-            if (isNotEmpty(url)) {
-                if (isExternalLink(url)) {
+            String linkValue = getString(node, PN_LINK, EMPTY);
+            if (isNotEmpty(linkValue)) {
+                if (isExternalLink(linkValue)) {
                     // we won't allow external links in a forward
-                    if (isForward) {
-                        url = EMPTY;
+                    if (!isForward) {
+                        url = linkValue;
                     }
                 } else {
-                    Node nodeFromId = getNodeFromId(url);
-                    if (nodeFromId != null) {
-                        url = getLinkFromNode(nodeFromId, isForward);
-                        if (isNotBlank(url) && url.contains(_contextPath)) {
-                            url = substringAfter(url, _contextPath);
-                        }
-                    }
+                    Node nodeFromId = getNodeFromId(linkValue);
+                    url = createTargetLinkForPage(nodeFromId, isForward, asExternal);
                 }
             }
+
             if (isNotEmpty(url)) {
                 url += getString(node, PN_SUFFIX, EMPTY);
+            }
+        }
+        return url;
+    }
+
+    private String createTargetLinkForPage(Node pageNode, boolean isForward, boolean asExternal) {
+        String url = EMPTY;
+        if (pageNode != null) {
+            if (asExternal) {
+                url = LinkUtil.createExternalLink(pageNode);
+            } else {
+                url = getLinkFromNode(pageNode, isForward);
+                if (isNotBlank(url) && url.contains(_contextPath)) {
+                    url = substringAfter(url, _contextPath);
+                }
             }
         }
         return url;
