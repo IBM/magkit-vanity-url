@@ -6,10 +6,10 @@
         <artifactId>magkit-pom</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>magnolia-vanity-url</artifactId>
+    <artifactId>magkit-vanity-url</artifactId>
     <version>1.6.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>magnolia-vanity-url Magnolia Module</name>
+    <name>magkit-vanity-url Magnolia Module</name>
 
     <inceptionYear>2013</inceptionYear>
 

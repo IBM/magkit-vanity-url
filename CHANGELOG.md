@@ -12,5 +12,5 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Migrate UI and app support to Magnolia 6.2 standard
 
-[unreleased]: https://github.com/IBM/magkit-vanity-url/compare/magnolia-vanity-url-1.6.0...HEAD
-[1.6.0]: https://github.com/IBM/magkit-vanity-url/releases/tag/magnolia-vanity-url-1.6.0
+[unreleased]: https://github.com/IBM/magkit-vanity-url/compare/magkit-vanity-url-1.6.0...HEAD
+[1.6.0]: https://github.com/IBM/magkit-vanity-url/releases/tag/magkit-vanity-url-1.6.0

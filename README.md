@@ -42,14 +42,14 @@ For example:
 ### Maven artifacts in Magnolia's Nexus
 
 The code is built by [GitHub actions](https://github.com/IBM/magkit-vanity-url/actions/workflows/build.yaml).
-You can browse available artifacts through [Magnolia's Nexus](https://nexus.magnolia-cms.com/#nexus-search;quick~magnolia-vanity-url)
+You can browse available artifacts through [Magnolia's Nexus](https://nexus.magnolia-cms.com/#nexus-search;quick~magkit-vanity-url)
 
 ### Maven dependency
 
 ```xml
     <dependency>
-        <artifactId>magnolia-vanity-url</artifactId>
-        <groupId>com.aperto.magkit</groupId>
+        <artifactId>magkit-vanity-url</artifactId>
+        <groupId>de.ibmix.magkit</groupId>
         <version>1.6.0</version>
     </dependency>
 ```
@@ -67,18 +67,18 @@ You can browse available artifacts through [Magnolia's Nexus](https://nexus.magn
 You can configure the following settings in the module configuration by JCR or yaml:
 * _excludes_ : Pattern of urls, which are no candidates for vanity urls.
   * by default an exclude for all urls containing a dot is configured, that prevents the virtual uri mapping checks every ordinary request like script.js or page.html 
-* _publicUrlService_ : Implementation of _com.aperto.magnolia.vanity.PublicUrlService_. Two implementations are already available.
-  * _com.aperto.magnolia.vanity.DefaultPublicUrlService_ (default) : Use of default base url and site configuration with context path replacement.
-  * _com.aperto.magnolia.vanity.SimplePublicUrlService_ : Uses configured public prefix and removes the author context path.
+* _publicUrlService_ : Implementation of _de.ibmix.magkit.vanity.url.PublicUrlService_. Two implementations are already available.
+  * _de.ibmix.magkit.vanity.url.DefaultPublicUrlService_ (default) : Use of default base url and site configuration with context path replacement.
+  * _de.ibmix.magkit.vanity.url.SimplePublicUrlService_ : Uses configured public prefix and removes the author context path.
 * _headlessEndpoint_ : is used for headless support and defines the pages rest endpoint which should be checked for vanity urls
 
 #### Headless support (with version 1.6.1)
 
 For using the headless support you have to decorate the default vanity url virtual uri mapping. It is also possible to define an additional virtual uri mapping 
 if you want to support both renderings. All you need is the following yaml which you can place in your module as decoration of the vanity url module 
-(your-module/decorations/magnolia-vanity-url/virtualUriMappings) or as own virtual uri mapping (your-module/virtualUriMappings).
+(your-module/decorations/magkit-vanity-url/virtualUriMappings) or as own virtual uri mapping (your-module/virtualUriMappings).
 ```yaml
-class: com.aperto.magnolia.vanity.HeadlessVirtualVanityUriMapping
+class: de.ibmix.magkit.vanity.url.HeadlessVirtualVanityUriMapping
 ```
 
 ## License
