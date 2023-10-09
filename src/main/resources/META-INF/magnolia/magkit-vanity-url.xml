@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  magkit-vanity-url Magnolia Module
+  %%
+  Copyright (C) 2013 - 2014 IBM iX
+  %%
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  #L%
+  -->
+
+<!DOCTYPE module SYSTEM "module.dtd" >
+<module>
+    <name>${project.artifactId}</name>
+    <displayName>${project.name}</displayName>
+    <description>${project.description}</description>
+    <class>de.ibmix.magkit.vanityurl.VanityUrlModule</class>
+    <versionHandler>de.ibmix.magkit.vanityurl.setup.VanityUrlModuleVersionHandler</versionHandler>
+    <version>${project.version}</version>
+
+    <components>
+        <id>main</id>
+        <component>
+            <type>de.ibmix.magkit.vanityurl.PublicUrlService</type>
+            <implementation>de.ibmix.magkit.vanityurl.DefaultPublicUrlService</implementation>
+        </component>
+    </components>
+
+    <components>
+        <id>datasource-sitelist</id>
+        <component>
+            <type>info.magnolia.ui.field.SelectFieldSupport</type>
+            <implementation>info.magnolia.ui.datasource.optionlist.OptionSelectFieldSupport</implementation>
+        </component>
+    </components>
+
+    <dependencies>
+        <dependency>
+            <name>ui-admincentral</name>
+            <version>${version.magnolia}/*</version>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <name>magnolia</name>
+            <workspaces>
+                <workspace>vanityUrls</workspace>
+            </workspaces>
+            <nodeTypeFile>/mgnl-nodetypes/magkit-vanity-url-nodetypes.xml</nodeTypeFile>
+        </repository>
+    </repositories>
+</module>
