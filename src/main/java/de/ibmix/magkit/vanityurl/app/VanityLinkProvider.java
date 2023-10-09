@@ -1,4 +1,4 @@
-package de.ibmix.magkit.vanity.url.app;
+package de.ibmix.magkit.vanityurl.app;
 
 /*
  * #%L
@@ -21,7 +21,7 @@ package de.ibmix.magkit.vanity.url.app;
  */
 
 
-import de.ibmix.magkit.vanity.url.VanityUrlService;
+import de.ibmix.magkit.vanityurl.VanityUrlService;
 import com.machinezoo.noexception.Exceptions;
 import com.vaadin.data.ValueProvider;
 

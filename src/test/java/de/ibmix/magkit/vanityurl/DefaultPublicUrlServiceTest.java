@@ -1,4 +1,4 @@
-package de.ibmix.magkit.vanity.url;
+package de.ibmix.magkit.vanityurl;
 
 /*
  * #%L
@@ -25,8 +25,8 @@ import info.magnolia.test.mock.jcr.MockNode;
 import org.junit.Before;
 import org.junit.Test;
 
-import static de.ibmix.magkit.vanity.url.VanityUrlService.PN_LINK;
-import static de.ibmix.magkit.vanity.url.VanityUrlService.PN_VANITY_URL;
+import static de.ibmix.magkit.vanityurl.VanityUrlService.PN_LINK;
+import static de.ibmix.magkit.vanityurl.VanityUrlService.PN_VANITY_URL;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;

@@ -1,4 +1,4 @@
-package de.ibmix.magkit.vanity.url.setup;
+package de.ibmix.magkit.vanityurl.setup;
 
 /*
  * #%L
@@ -32,7 +32,7 @@ import info.magnolia.module.delta.Task;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.ibmix.magkit.vanity.url.VanityUrlModule.WORKSPACE;
+import static de.ibmix.magkit.vanityurl.VanityUrlModule.WORKSPACE;
 import static info.magnolia.jcr.nodebuilder.Ops.addNode;
 import static info.magnolia.jcr.nodebuilder.Ops.addProperty;
 import static info.magnolia.jcr.nodebuilder.task.ErrorHandling.logging;

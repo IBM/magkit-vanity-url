@@ -1,4 +1,4 @@
-package de.ibmix.magkit.vanity.url;
+package de.ibmix.magkit.vanityurl;
 
 /*
  * #%L
@@ -24,7 +24,7 @@ import info.magnolia.link.LinkUtil;
 
 import javax.jcr.Node;
 
-import static de.ibmix.magkit.vanity.url.VanityUrlService.getNodeFromId;
+import static de.ibmix.magkit.vanityurl.VanityUrlService.getNodeFromId;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 /**

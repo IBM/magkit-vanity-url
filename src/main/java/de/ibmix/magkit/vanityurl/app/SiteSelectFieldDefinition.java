@@ -1,4 +1,4 @@
-package de.ibmix.magkit.vanity.url.app;
+package de.ibmix.magkit.vanityurl.app;
 
 /*
  * #%L
@@ -34,7 +34,7 @@ import javax.jcr.Session;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.ibmix.magkit.vanity.url.VanityUrlService.DEF_SITE;
+import static de.ibmix.magkit.vanityurl.VanityUrlService.DEF_SITE;
 import static info.magnolia.jcr.util.NodeTypes.ContentNode;
 import static info.magnolia.jcr.util.NodeUtil.asList;
 import static info.magnolia.repository.RepositoryConstants.CONFIG;

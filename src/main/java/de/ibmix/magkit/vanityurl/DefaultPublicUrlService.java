@@ -1,4 +1,4 @@
-package de.ibmix.magkit.vanity.url;
+package de.ibmix.magkit.vanityurl;
 
 /*
  * #%L
@@ -32,12 +32,12 @@ import javax.inject.Named;
 import javax.jcr.Node;
 import java.util.Collection;
 
-import static de.ibmix.magkit.vanity.url.VanityUrlService.DEF_SITE;
-import static de.ibmix.magkit.vanity.url.VanityUrlService.PN_LINK;
-import static de.ibmix.magkit.vanity.url.VanityUrlService.PN_SITE;
-import static de.ibmix.magkit.vanity.url.VanityUrlService.PN_SUFFIX;
-import static de.ibmix.magkit.vanity.url.VanityUrlService.PN_VANITY_URL;
-import static de.ibmix.magkit.vanity.url.VanityUrlService.isExternalLink;
+import static de.ibmix.magkit.vanityurl.VanityUrlService.DEF_SITE;
+import static de.ibmix.magkit.vanityurl.VanityUrlService.PN_LINK;
+import static de.ibmix.magkit.vanityurl.VanityUrlService.PN_SITE;
+import static de.ibmix.magkit.vanityurl.VanityUrlService.PN_SUFFIX;
+import static de.ibmix.magkit.vanityurl.VanityUrlService.PN_VANITY_URL;
+import static de.ibmix.magkit.vanityurl.VanityUrlService.isExternalLink;
 import static info.magnolia.jcr.util.NodeUtil.getPathIfPossible;
 import static info.magnolia.jcr.util.PropertyUtil.getString;
 import static org.apache.commons.lang3.StringUtils.EMPTY;

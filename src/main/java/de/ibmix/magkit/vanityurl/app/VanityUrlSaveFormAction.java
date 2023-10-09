@@ -1,4 +1,4 @@
-package de.ibmix.magkit.vanity.url.app;
+package de.ibmix.magkit.vanityurl.app;
 
 /*
  * #%L
@@ -20,7 +20,7 @@ package de.ibmix.magkit.vanity.url.app;
  * #L%
  */
 
-import de.ibmix.magkit.vanity.url.VanityUrlService;
+import de.ibmix.magkit.vanityurl.VanityUrlService;
 import com.machinezoo.noexception.Exceptions;
 import com.vaadin.ui.Notification;
 import info.magnolia.cms.core.FileSystemHelper;
@@ -61,9 +61,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
-import static de.ibmix.magkit.vanity.url.VanityUrlService.NN_IMAGE;
-import static de.ibmix.magkit.vanity.url.VanityUrlService.PN_SITE;
-import static de.ibmix.magkit.vanity.url.VanityUrlService.PN_VANITY_URL;
+import static de.ibmix.magkit.vanityurl.VanityUrlService.NN_IMAGE;
+import static de.ibmix.magkit.vanityurl.VanityUrlService.PN_SITE;
+import static de.ibmix.magkit.vanityurl.VanityUrlService.PN_VANITY_URL;
 import static info.magnolia.cms.beans.runtime.File.PROPERTY_CONTENTTYPE;
 import static info.magnolia.cms.beans.runtime.File.PROPERTY_FILENAME;
 import static info.magnolia.cms.beans.runtime.File.PROPERTY_LASTMODIFIED;

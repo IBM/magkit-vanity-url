@@ -1,4 +1,4 @@
-package de.ibmix.magkit.vanity.url;
+package de.ibmix.magkit.vanityurl;
 
 /*
  * #%L
@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.regex.PatternSyntaxException;
 
-import static de.ibmix.magkit.vanity.url.VanityUrlService.DEF_SITE;
+import static de.ibmix.magkit.vanityurl.VanityUrlService.DEF_SITE;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;

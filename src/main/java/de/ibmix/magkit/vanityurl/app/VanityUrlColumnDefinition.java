@@ -1,4 +1,4 @@
-package de.ibmix.magkit.vanity.url.app;
+package de.ibmix.magkit.vanityurl.app;
 
 /*
  * #%L

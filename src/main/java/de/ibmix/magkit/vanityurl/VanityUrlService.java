@@ -1,4 +1,4 @@
-package de.ibmix.magkit.vanity.url;
+package de.ibmix.magkit.vanityurl;
 
 /*
  * #%L
@@ -20,7 +20,7 @@ package de.ibmix.magkit.vanity.url;
  * #L%
  */
 
-import de.ibmix.magkit.vanity.url.app.VanityUrlSaveFormAction;
+import de.ibmix.magkit.vanityurl.app.VanityUrlSaveFormAction;
 import info.magnolia.context.MgnlContext;
 import info.magnolia.jcr.util.NodeUtil;
 import info.magnolia.link.LinkUtil;

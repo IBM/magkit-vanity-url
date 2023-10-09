@@ -27,7 +27,7 @@ subApps:
         format: XML
       preview:
         class: info.magnolia.ui.contentapp.action.OpenLocationActionDefinition
-        implementationClass: de.ibmix.magkit.vanity.url.app.PreviewAction
+        implementationClass: de.ibmix.magkit.vanityurl.app.PreviewAction
         icon: icon-external-webpage
         appName: vanityUrls
         subAppId: preview
@@ -40,7 +40,7 @@ subApps:
               negate: true
       viewCode:
         class: info.magnolia.ui.contentapp.action.OpenLocationActionDefinition
-        implementationClass: de.ibmix.magkit.vanity.url.app.QrCodeViewAction
+        implementationClass: de.ibmix.magkit.vanityurl.app.QrCodeViewAction
         icon: icon-view
         appName: vanityUrls
         subAppId: preview
@@ -66,7 +66,7 @@ subApps:
               filterComponent:
                 $type: textField
             link:
-              valueProvider: de.ibmix.magkit.vanity.url.app.VanityLinkProvider
+              valueProvider: de.ibmix.magkit.vanityurl.app.VanityLinkProvider
               width: 400
               filterComponent:
                 $type: textField
@@ -89,7 +89,7 @@ subApps:
               filterComponent:
                 $type: textField
             link:
-              valueProvider: de.ibmix.magkit.vanity.url.app.VanityLinkProvider
+              valueProvider: de.ibmix.magkit.vanityurl.app.VanityLinkProvider
               width: 400
               filterComponent:
                 $type: textField
@@ -138,7 +138,7 @@ subApps:
     actions:
       commit:
         $type: commitAction
-        implementationClass: de.ibmix.magkit.vanity.url.app.VanityUrlSaveFormAction
+        implementationClass: de.ibmix.magkit.vanityurl.app.VanityUrlSaveFormAction
       cancel:
         $type: closeAction
   preview:

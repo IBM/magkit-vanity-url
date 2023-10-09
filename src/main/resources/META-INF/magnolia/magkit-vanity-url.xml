@@ -24,15 +24,15 @@
     <name>${project.artifactId}</name>
     <displayName>${project.name}</displayName>
     <description>${project.description}</description>
-    <class>de.ibmix.magkit.vanity.url.VanityUrlModule</class>
-    <versionHandler>de.ibmix.magkit.vanity.url.setup.VanityUrlModuleVersionHandler</versionHandler>
+    <class>de.ibmix.magkit.vanityurl.VanityUrlModule</class>
+    <versionHandler>de.ibmix.magkit.vanityurl.setup.VanityUrlModuleVersionHandler</versionHandler>
     <version>${project.version}</version>
 
     <components>
         <id>main</id>
         <component>
-            <type>de.ibmix.magkit.vanity.url.PublicUrlService</type>
-            <implementation>de.ibmix.magkit.vanity.url.DefaultPublicUrlService</implementation>
+            <type>de.ibmix.magkit.vanityurl.PublicUrlService</type>
+            <implementation>de.ibmix.magkit.vanityurl.DefaultPublicUrlService</implementation>
         </component>
     </components>
 

@@ -1,4 +1,4 @@
-package de.ibmix.magkit.vanity.url.app;
+package de.ibmix.magkit.vanityurl.app;
 
 /*
  * #%L
@@ -20,7 +20,7 @@ package de.ibmix.magkit.vanity.url.app;
  * #L%
  */
 
-import de.ibmix.magkit.vanity.url.VanityUrlService;
+import de.ibmix.magkit.vanityurl.VanityUrlService;
 import info.magnolia.ui.ValueContext;
 import info.magnolia.ui.api.action.AbstractAction;
 import info.magnolia.ui.api.location.DefaultLocation;
@@ -34,22 +34,23 @@ import javax.inject.Inject;
 import javax.jcr.Node;
 
 import static info.magnolia.ui.api.location.Location.LOCATION_TYPE_APP;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
- * Preview action for vanity urls. Opens the website page or the external url in the configured app.
+ * Action to see the big QR code image for a vanity url.
  *
  * @author frank.sommer
- * @since 06.05.14
+ * @since 28.05.14
  */
-public class PreviewAction extends AbstractAction<OpenLocationActionDefinition> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PreviewAction.class);
+public class QrCodeViewAction extends AbstractAction<OpenLocationActionDefinition> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(QrCodeViewAction.class);
 
     private final LocationController _locationController;
     private final ValueContext<Node> _valueContext;
     private VanityUrlService _vanityUrlService;
 
     @Inject
-    public PreviewAction(OpenLocationActionDefinition definition, ValueContext<Node> valueContext, LocationController locationController) {
+    public QrCodeViewAction(OpenLocationActionDefinition definition, ValueContext<Node> valueContext, LocationController locationController) {
         super(definition);
         _locationController = locationController;
         _valueContext = valueContext;
@@ -57,11 +58,13 @@ public class PreviewAction extends AbstractAction<OpenLocationActionDefinition> 
 
     @Override
     public void execute() {
-        LOGGER.debug("Execute preview action ...");
+        LOGGER.debug("Execute qr code view action ...");
         if (_valueContext.getSingle().isPresent()) {
-            String link = _vanityUrlService.createPreviewUrl(_valueContext.getSingle().get());
-            Location location = new DefaultLocation(LOCATION_TYPE_APP, getDefinition().getAppName(), getDefinition().getSubAppId(), link);
-            _locationController.goTo(location);
+            String link = _vanityUrlService.createImageLink(_valueContext.getSingle().get());
+            if (isNotEmpty(link)) {
+                Location location = new DefaultLocation(LOCATION_TYPE_APP, getDefinition().getAppName(), getDefinition().getSubAppId(), link);
+                _locationController.goTo(location);
+            }
         }
     }
 
