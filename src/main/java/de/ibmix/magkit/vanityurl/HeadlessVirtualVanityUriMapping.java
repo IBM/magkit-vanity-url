@@ -28,6 +28,7 @@ import javax.jcr.Node;
 import java.net.URI;
 import java.util.Map;
 
+import static info.magnolia.cms.util.RequestDispatchUtil.FORWARD_PREFIX;
 import static info.magnolia.repository.RepositoryConstants.WEBSITE;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -68,7 +69,14 @@ public class HeadlessVirtualVanityUriMapping extends VirtualVanityUriMapping {
 
     @Override
     protected String createUrlForVanityNode(Node node) {
-        return getVanityUrlService().createRedirectUrl(node, true);
+        String redirectUrl = getVanityUrlService().createRedirectUrl(node, true);
+        if (redirectUrl.startsWith(FORWARD_PREFIX)) {
+            final String headlessEndpoint = getVanityUrlModule().getHeadlessEndpoint();
+            if (isNotBlank(headlessEndpoint)) {
+                redirectUrl = FORWARD_PREFIX + headlessEndpoint + substringAfter(redirectUrl, FORWARD_PREFIX);
+            }
+        }
+        return redirectUrl;
     }
 
     @Inject
