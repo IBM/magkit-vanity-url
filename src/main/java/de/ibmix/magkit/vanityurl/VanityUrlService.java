@@ -86,21 +86,24 @@ public class VanityUrlService {
      * Creates the redirect url for uri mapping.
      * Without context path, because of Magnolia's {@link info.magnolia.cms.util.RequestDispatchUtil}.
      *
-     * @param node vanity url node
+     * @param node         vanity url node
+     * @param originSuffix origin url suffix
      * @return redirect url
      */
-    protected String createRedirectUrl(final Node node) {
-        return createRedirectUrl(node, false);
+    protected String createRedirectUrl(final Node node, String originSuffix) {
+        return createRedirectUrl(node, false, originSuffix);
     }
 
     /**
      * Creates the redirect url for uri mapping.
      * Without context path, because of Magnolia's {@link info.magnolia.cms.util.RequestDispatchUtil}.
      *
-     * @param node vanity url node
+     * @param node         vanity url node
+     * @param asExternal   external link flag
+     * @param originSuffix origin url suffix
      * @return redirect url
      */
-    protected String createRedirectUrl(final Node node, final boolean asExternal) {
+    protected String createRedirectUrl(final Node node, final boolean asExternal, final String originSuffix) {
         String result;
         String type = getString(node, PN_TYPE, EMPTY);
         String prefix;
@@ -108,7 +111,7 @@ public class VanityUrlService {
             result = createForwardLink(node);
             prefix = FORWARD_PREFIX;
         } else {
-            result = createTargetLink(node, asExternal);
+            result = createTargetLink(node, asExternal, originSuffix);
             prefix = "301".equals(type) ? PERMANENT_PREFIX : REDIRECT_PREFIX;
         }
         if (isNotEmpty(result)) {
@@ -147,20 +150,20 @@ public class VanityUrlService {
      * @return preview url
      */
     public String createPreviewUrl(final Node node) {
-        return createTargetLink(node, false);
+        return createTargetLink(node, false, null);
     }
 
     private String createForwardLink(final Node node) {
         // nearly the same functionality as in createTargetLink. the only difference
         // is the clearing of the url if an external url had been configured
-        return createTargetLink(node, true, false);
+        return createTargetLink(node, true, false, null);
     }
 
-    private String createTargetLink(final Node node, final boolean asExternal) {
-        return createTargetLink(node, false, asExternal);
+    private String createTargetLink(final Node node, final boolean asExternal, String originSuffix) {
+        return createTargetLink(node, false, asExternal, originSuffix);
     }
 
-    private String createTargetLink(final Node node, final boolean isForward, final boolean asExternal) {
+    private String createTargetLink(final Node node, final boolean isForward, final boolean asExternal, String originSuffix) {
         String url = EMPTY;
         if (node != null) {
             String linkValue = getString(node, PN_LINK, EMPTY);
@@ -176,8 +179,8 @@ public class VanityUrlService {
                 }
             }
 
-            if (isNotEmpty(url)) {
-                url += getString(node, PN_SUFFIX, EMPTY);
+            if (isNotEmpty(url) && !isForward) {
+                url += defaultString(getString(node, PN_SUFFIX, originSuffix));
             }
         }
         return url;

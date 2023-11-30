@@ -76,7 +76,7 @@ public class VirtualVanityUriMapping implements VirtualUriMapping {
             String vanityUrl = extractPath(uri);
             if (isVanityCandidate(vanityUrl)) {
                 final String siteName = retrieveSite(vanityUrl);
-                String toUri = getUriOfVanityUrl(siteName, vanityUrl);
+                String toUri = getUriOfVanityUrl(siteName, vanityUrl, Optional.ofNullable(uri.getQuery()).map(value -> "?" + value).orElse(null));
                 if (isNotBlank(toUri)) {
                     result = Optional.of(new Result(toUri, vanityUrl.length(), this));
                 }
@@ -109,7 +109,7 @@ public class VirtualVanityUriMapping implements VirtualUriMapping {
         return uri.length() <= 1;
     }
 
-    protected String getUriOfVanityUrl(String siteName, final String vanityUrl) {
+    protected String getUriOfVanityUrl(String siteName, final String vanityUrl, String originSuffix) {
         Node node = null;
 
         try {
@@ -121,17 +121,18 @@ public class VirtualVanityUriMapping implements VirtualUriMapping {
             LOGGER.warn("Error on querying for vanity url.", e);
         }
 
-        return node == null ? EMPTY : createUrlForVanityNode(node);
+        return node == null ? EMPTY : createUrlForVanityNode(node, originSuffix);
     }
 
     /**
      * Override for alternative redirect url creation.
      *
-     * @param node vanity url node
+     * @param node         vanity url node
+     * @param originSuffix origin url suffix
      * @return redirect or forward url
      */
-    protected String createUrlForVanityNode(final Node node) {
-        return _vanityUrlService.get().createRedirectUrl(node);
+    protected String createUrlForVanityNode(final Node node, String originSuffix) {
+        return _vanityUrlService.get().createRedirectUrl(node, originSuffix);
     }
 
     protected String retrieveSite(String vanityUrl) {

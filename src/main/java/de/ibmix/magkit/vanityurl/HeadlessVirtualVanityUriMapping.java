@@ -31,6 +31,7 @@ import java.util.Map;
 import static info.magnolia.cms.util.RequestDispatchUtil.FORWARD_PREFIX;
 import static info.magnolia.repository.RepositoryConstants.WEBSITE;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.substringAfter;
 
@@ -61,15 +62,15 @@ public class HeadlessVirtualVanityUriMapping extends VirtualVanityUriMapping {
     }
 
     @Override
-    protected String getUriOfVanityUrl(String siteName, String vanityUrl) {
+    protected String getUriOfVanityUrl(String siteName, String vanityUrl, String originSuffix) {
         final Map<String, URI2RepositoryMapping> mappings = _siteManager.getSite(siteName).getMappings();
-        String mappedUri = mappings.values().stream().filter(repositoryMapping -> WEBSITE.equals(repositoryMapping.getRepository())).findFirst().map(mapping -> vanityUrl.replace(mapping.getHandlePrefix(), mapping.getURIPrefix())).orElse(EMPTY);
-        return super.getUriOfVanityUrl(siteName, mappedUri);
+        String mappedUri = mappings.values().stream().filter(repositoryMapping -> WEBSITE.equals(repositoryMapping.getRepository())).findFirst().map(mapping -> vanityUrl.replace(mapping.getHandlePrefix(), defaultString(mapping.getURIPrefix()))).orElse(EMPTY);
+        return super.getUriOfVanityUrl(siteName, mappedUri, originSuffix);
     }
 
     @Override
-    protected String createUrlForVanityNode(Node node) {
-        String redirectUrl = getVanityUrlService().createRedirectUrl(node, true);
+    protected String createUrlForVanityNode(Node node, String originSuffix) {
+        String redirectUrl = getVanityUrlService().createRedirectUrl(node, true, originSuffix);
         if (redirectUrl.startsWith(FORWARD_PREFIX)) {
             final String headlessEndpoint = getVanityUrlModule().getHeadlessEndpoint();
             if (isNotBlank(headlessEndpoint)) {

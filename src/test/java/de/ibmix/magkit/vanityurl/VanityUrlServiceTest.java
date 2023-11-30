@@ -11,13 +11,12 @@ import info.magnolia.test.mock.jcr.MockSession;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.inject.Provider;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -56,13 +55,13 @@ public class VanityUrlServiceTest {
 
     @Test
     public void testRedirectWithNull() {
-        assertThat(_service.createRedirectUrl(null), equalTo(""));
+        assertThat(_service.createRedirectUrl(null, null), equalTo(""));
     }
 
     @Test
     public void testTargetUrlWithEmptyNode() {
         MockNode mockNode = new MockNode("node");
-        assertThat(_service.createRedirectUrl(mockNode), equalTo(""));
+        assertThat(_service.createRedirectUrl(mockNode, null), equalTo(""));
         assertThat(_service.createPreviewUrl(mockNode), equalTo(""));
     }
 
@@ -72,7 +71,7 @@ public class VanityUrlServiceTest {
         mockNode.setProperty("link", TEST_UUID);
         mockNode.setProperty("linkSuffix", "#anchor1");
 
-        assertThat(_service.createRedirectUrl(mockNode), equalTo("redirect:/internal/page.html#anchor1"));
+        assertThat(_service.createRedirectUrl(mockNode, null), equalTo("redirect:/internal/page.html#anchor1"));
         assertThat(_service.createPreviewUrl(mockNode), equalTo("/internal/page.html#anchor1"));
     }
 
@@ -81,7 +80,7 @@ public class VanityUrlServiceTest {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty("link", "http://www.aperto.de");
 
-        assertThat(_service.createRedirectUrl(mockNode), equalTo("redirect:http://www.aperto.de"));
+        assertThat(_service.createRedirectUrl(mockNode, null), equalTo("redirect:http://www.aperto.de"));
         assertThat(_service.createPreviewUrl(mockNode), equalTo("http://www.aperto.de"));
     }
 
@@ -90,16 +89,24 @@ public class VanityUrlServiceTest {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty("link", TEST_UUID_FORWARD);
         mockNode.setProperty("type", "forward");
-        assertThat(_service.createRedirectUrl(mockNode), equalTo("forward:/internal/forward/page.html"));
+        assertThat(_service.createRedirectUrl(mockNode, null), equalTo("forward:/internal/forward/page.html"));
     }
 
     @Test
-    public void testForwardWithAnchor() throws Exception {
+    public void testRedirectWithAnchor() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty("link", TEST_UUID_FORWARD);
-        mockNode.setProperty("type", "forward");
+        mockNode.setProperty("type", "301");
         mockNode.setProperty("linkSuffix", "#anchor1");
-        assertThat(_service.createRedirectUrl(mockNode), equalTo("forward:/internal/forward/page.html#anchor1"));
+        assertThat(_service.createRedirectUrl(mockNode, null), equalTo("permanent:/internal/forward/page.html#anchor1"));
+    }
+
+    @Test
+    public void testRedirectWithOriginSuffix() throws Exception {
+        MockNode mockNode = new MockNode("node");
+        mockNode.setProperty("link", TEST_UUID_FORWARD);
+        mockNode.setProperty("type", "301");
+        assertThat(_service.createRedirectUrl(mockNode, "?test=1"), equalTo("permanent:/internal/forward/page.html?test=1"));
     }
 
     @Test
@@ -107,7 +114,7 @@ public class VanityUrlServiceTest {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty("link", "http://www.aperto.de");
         mockNode.setProperty("type", "forward");
-        assertThat(_service.createRedirectUrl(mockNode), equalTo(""));
+        assertThat(_service.createRedirectUrl(mockNode, null), equalTo(""));
     }
 
     @Test
@@ -180,13 +187,11 @@ public class VanityUrlServiceTest {
             }
         };
 
-        Provider<VanityUrlModule> moduleProvider = mock(Provider.class);
         VanityUrlModule vanityUrlModule = new VanityUrlModule();
         PublicUrlService publicUrlService = mock(PublicUrlService.class);
         when(publicUrlService.createTargetUrl(any())).thenReturn("http://www.aperto.de/page.html");
         when(publicUrlService.createVanityUrl(any())).thenReturn("http://www.aperto.de/vanity");
         vanityUrlModule.setPublicUrlService(publicUrlService);
-        when(moduleProvider.get()).thenReturn(vanityUrlModule);
-        _service.setVanityUrlModule(moduleProvider);
+        _service.setVanityUrlModule(() -> vanityUrlModule);
     }
 }
