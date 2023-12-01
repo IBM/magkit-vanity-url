@@ -87,6 +87,15 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>javadoc</id>
+            <properties>
+                <checkstyle.skip>true</checkstyle.skip>
+            </properties>
+        </profile>
+    </profiles>
+
     <scm>
         <url>https://github.com/IBM/magkit-vanity-url.git</url>
         <connection>scm:git:https://github.com/IBM/magkit-vanity-url.git</connection>
