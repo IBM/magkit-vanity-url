@@ -46,7 +46,7 @@
 
     <dependencies>
         <dependency>
-            <name>ui-admincentral</name>
+            <name>ui-framework-jcr</name>
             <version>${version.magnolia}/*</version>
         </dependency>
     </dependencies>
