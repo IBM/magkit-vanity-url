@@ -139,11 +139,21 @@ public class VanityUrlServiceTest {
     }
 
     @Test
-    public void testImageLinkWithImage() {
+    public void testImageLinkWithPngImage() {
         MockNode mockNode = new MockNode("node");
         MockNode image = new MockNode(VanityUrlService.NN_IMAGE);
         mockNode.addNode(image);
         assertThat(_service.createImageLink(mockNode), equalTo("/node/qrCode.png"));
+    }
+
+    @Test
+    public void testImageLinkWithSvgImage() {
+        MockNode mockNode = new MockNode("node");
+        MockNode image = new MockNode(VanityUrlService.NN_IMAGE);
+        mockNode.addNode(image);
+        VanityUrlModule vanityUrlModule = new VanityUrlModule();
+        _service.setVanityUrlModule(() -> vanityUrlModule);
+        assertThat(_service.createImageLink(mockNode), equalTo("/node/qrCode.svg"));
     }
 
     private MockNode createNode(MockSession session, String path) throws Exception {
@@ -192,6 +202,9 @@ public class VanityUrlServiceTest {
         when(publicUrlService.createTargetUrl(any())).thenReturn("http://www.aperto.de/page.html");
         when(publicUrlService.createVanityUrl(any())).thenReturn("http://www.aperto.de/vanity");
         vanityUrlModule.setPublicUrlService(publicUrlService);
+        PreviewImageConfig config = new PreviewImageConfig();
+        config.setType(PreviewImageConfig.ImageType.PNG);
+        vanityUrlModule.setPreviewImage(config);
         _service.setVanityUrlModule(() -> vanityUrlModule);
     }
 }

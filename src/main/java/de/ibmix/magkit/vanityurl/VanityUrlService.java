@@ -20,7 +20,6 @@ package de.ibmix.magkit.vanityurl;
  * #L%
  */
 
-import de.ibmix.magkit.vanityurl.app.VanityUrlSaveFormAction;
 import info.magnolia.context.MgnlContext;
 import info.magnolia.jcr.util.NodeUtil;
 import info.magnolia.link.LinkUtil;
@@ -40,6 +39,7 @@ import javax.jcr.query.QueryResult;
 import java.util.Collections;
 import java.util.List;
 
+import static de.ibmix.magkit.vanityurl.PreviewImageConfig.ImageType.SVG;
 import static info.magnolia.cms.util.RequestDispatchUtil.FORWARD_PREFIX;
 import static info.magnolia.cms.util.RequestDispatchUtil.PERMANENT_PREFIX;
 import static info.magnolia.cms.util.RequestDispatchUtil.REDIRECT_PREFIX;
@@ -213,7 +213,7 @@ public class VanityUrlService {
             if (node != null && node.hasNode(NN_IMAGE)) {
                 link = getLinkFromNode(node.getNode(NN_IMAGE), false);
                 link = removeStart(defaultString(link), _contextPath);
-                link = replace(link, "." + DEFAULT_EXTENSION, VanityUrlSaveFormAction.IMAGE_EXTENSION);
+                link = replace(link, "." + DEFAULT_EXTENSION, getImageType(_vanityUrlModule.get()).getExtention());
             }
         } catch (RepositoryException e) {
             LOGGER.error("Error creating link to image property.", e);
@@ -290,5 +290,14 @@ public class VanityUrlService {
 
     static boolean isExternalLink(String linkValue) {
         return startsWithIgnoreCase(linkValue, "https://") || startsWithIgnoreCase(linkValue, "http://");
+    }
+
+    public static PreviewImageConfig.ImageType getImageType(VanityUrlModule vanityUrlModule) {
+        PreviewImageConfig.ImageType imageType = SVG;
+        final PreviewImageConfig previewImageConfig = vanityUrlModule.getPreviewImage();
+        if (previewImageConfig != null) {
+            imageType = previewImageConfig.getType();
+        }
+        return imageType;
     }
 }

@@ -14,7 +14,7 @@
     <inceptionYear>2013</inceptionYear>
 
     <properties>
-        <qrgen.version>1.4</qrgen.version>
+        <qrgen.version>3.0.1</qrgen.version>
     </properties>
 
     <dependencies>
@@ -51,8 +51,8 @@
             <artifactId>magnolia-site-app</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.glxn</groupId>
-            <artifactId>qrgen</artifactId>
+            <groupId>com.github.kenglxn.QRGen</groupId>
+            <artifactId>javase</artifactId>
             <version>${qrgen.version}</version>
         </dependency>
 
@@ -108,6 +108,10 @@
             <id>magnolia.enterprise</id>
             <name>Magnolia Enterprise Group</name>
             <url>https://nexus.magnolia-cms.com/content/groups/enterprise/</url>
+        </repository>
+        <repository>
+            <id>maven-sci</id>
+            <url>https://maven.scijava.org/content/repositories/public/</url>
         </repository>
     </repositories>
 

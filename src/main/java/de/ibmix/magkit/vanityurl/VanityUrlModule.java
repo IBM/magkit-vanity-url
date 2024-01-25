@@ -34,7 +34,9 @@ import java.util.Map;
 public class VanityUrlModule {
     public static final String WORKSPACE = "vanityUrls";
     public static final String NT_VANITY = "mgnl:vanityUrl";
+
     private Map<String, String> _excludes;
+    private PreviewImageConfig _previewImage;
     private PublicUrlService _publicUrlService;
 
     private String _headlessEndpoint;
@@ -64,5 +66,13 @@ public class VanityUrlModule {
 
     public void setHeadlessEndpoint(String headlessEndpoint) {
         _headlessEndpoint = headlessEndpoint;
+    }
+
+    public PreviewImageConfig getPreviewImage() {
+        return _previewImage;
+    }
+
+    public void setPreviewImage(PreviewImageConfig previewImage) {
+        _previewImage = previewImage;
     }
 }

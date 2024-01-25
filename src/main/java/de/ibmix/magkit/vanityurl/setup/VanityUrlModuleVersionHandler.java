@@ -24,6 +24,7 @@ import info.magnolia.jcr.nodebuilder.task.NodeBuilderTask;
 import info.magnolia.module.DefaultModuleVersionHandler;
 import info.magnolia.module.InstallContext;
 import info.magnolia.module.delta.DeltaBuilder;
+import info.magnolia.module.delta.NodeExistsDelegateTask;
 import info.magnolia.module.delta.RemoveNodeTask;
 import info.magnolia.module.delta.RemovePropertyTask;
 import info.magnolia.module.delta.SetPropertyTask;
@@ -46,9 +47,9 @@ import static info.magnolia.repository.RepositoryConstants.CONFIG;
  */
 public class VanityUrlModuleVersionHandler extends DefaultModuleVersionHandler {
 
-    private final Task _addAppToLauncher = new NodeBuilderTask("Add app to app launcher", "Add vanity url app to app launcher.", logging, CONFIG, "/modules/ui-admincentral/config/appLauncherLayout/groups/manage/apps",
+    private final Task _addAppToLauncher = new NodeExistsDelegateTask("Add app to app launcher if exists", "Add vanity url app to app launcher if exists.", new NodeBuilderTask("Add app to app launcher", "Add vanity url app to app launcher.", logging, CONFIG, "/modules/ui-admincentral/config/appLauncherLayout/groups/manage/apps",
         addNode("vanityUrls", ContentNode.NAME)
-    );
+    ), null);
 
     private final Task _addUriRepositoryMapping = new NodeBuilderTask("Add repository mapping", "Add uri to repository mapping for vanityUrls.", logging, CONFIG, "/server/URI2RepositoryMapping/mappings",
         addNode(WORKSPACE, ContentNode.NAME).then(
