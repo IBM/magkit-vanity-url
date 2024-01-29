@@ -20,24 +20,20 @@ package de.ibmix.magkit.vanityurl.app;
  * #L%
  */
 
-import info.magnolia.context.MgnlContext;
-import info.magnolia.jcr.util.NodeUtil;
+import info.magnolia.module.site.Site;
+import info.magnolia.module.site.SiteManager;
+import info.magnolia.objectfactory.Components;
 import info.magnolia.ui.datasource.DatasourceType;
 import info.magnolia.ui.datasource.optionlist.Option;
 import info.magnolia.ui.datasource.optionlist.OptionListDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.jcr.Node;
-import javax.jcr.RepositoryException;
-import javax.jcr.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static de.ibmix.magkit.vanityurl.VanityUrlService.DEF_SITE;
-import static info.magnolia.jcr.util.NodeTypes.ContentNode;
-import static info.magnolia.jcr.util.NodeUtil.asList;
-import static info.magnolia.repository.RepositoryConstants.CONFIG;
 
 /**
  * Extends for site select options.
@@ -48,7 +44,6 @@ import static info.magnolia.repository.RepositoryConstants.CONFIG;
 @DatasourceType("siteListDatasource")
 public class SiteSelectFieldDefinition extends OptionListDefinition {
     private static final Logger LOGGER = LoggerFactory.getLogger(SiteSelectFieldDefinition.class);
-    private static final String SITE_LOCATION = "/modules/multisite/config/sites";
 
     public SiteSelectFieldDefinition() {
         setName("sitelist");
@@ -58,14 +53,14 @@ public class SiteSelectFieldDefinition extends OptionListDefinition {
     public List<Option> getOptions() {
         List<Option> options = new ArrayList<>();
 
-        final List<Node> nodes = getNodes();
-        if (nodes.isEmpty()) {
+        final Collection<Site> sites = getSites();
+        if (sites.isEmpty()) {
             LOGGER.debug("No site nodes found.");
             options.add(createOptionDefinition(DEF_SITE));
         } else {
-            LOGGER.debug("{} site nodes found.", nodes.size());
-            for (Node node : nodes) {
-                options.add(createOptionDefinition(NodeUtil.getName(node)));
+            LOGGER.debug("{} site nodes found.", sites.size());
+            for (Site site : sites) {
+                options.add(createOptionDefinition(site.getName()));
             }
         }
         return options;
@@ -79,24 +74,7 @@ public class SiteSelectFieldDefinition extends OptionListDefinition {
         return def;
     }
 
-    private List<Node> getNodes() {
-        List<Node> nodes = new ArrayList<>();
-
-        try {
-            MgnlContext.doInSystemContext(new MgnlContext.RepositoryOp() {
-                @Override
-                public void doExec() throws RepositoryException {
-                    Session jcrSession = MgnlContext.getJCRSession(CONFIG);
-                    if (jcrSession.nodeExists(SITE_LOCATION)) {
-                        Node siteBaseNode = jcrSession.getNode(SITE_LOCATION);
-                        nodes.addAll(asList(NodeUtil.getNodes(siteBaseNode, ContentNode.NAME)));
-                    }
-                }
-            });
-        } catch (RepositoryException e) {
-            LOGGER.error("Error getting site nodes.", e);
-        }
-
-        return nodes;
+    private Collection<Site> getSites() {
+        return Components.getComponent(SiteManager.class).getSites();
     }
 }
