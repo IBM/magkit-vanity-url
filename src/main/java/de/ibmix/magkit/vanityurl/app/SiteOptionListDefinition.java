@@ -26,12 +26,10 @@ import info.magnolia.objectfactory.Components;
 import info.magnolia.ui.datasource.DatasourceType;
 import info.magnolia.ui.datasource.optionlist.Option;
 import info.magnolia.ui.datasource.optionlist.OptionListDefinition;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Data source implementation for site options.
@@ -41,7 +39,8 @@ import java.util.List;
  */
 @DatasourceType("siteListDatasource")
 public class SiteOptionListDefinition extends OptionListDefinition {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SiteOptionListDefinition.class);
+
+    private static final String MULTI_SITE_FALLBACK = "fallback";
 
     public SiteOptionListDefinition() {
         setName("sitelist");
@@ -49,14 +48,17 @@ public class SiteOptionListDefinition extends OptionListDefinition {
 
     @Override
     public List<Option> getOptions() {
-        List<Option> options = new ArrayList<>();
-
-        final Collection<Site> sites = getSites();
-        LOGGER.debug("{} sites found.", sites.size());
-        for (Site site : sites) {
-            options.add(createOptionDefinition(site.getName()));
-        }
-        return options;
+        return getSites().stream().map(Site::getName).sorted((siteName1, siteName2) -> {
+            int compareValue;
+            if (siteName1.equals(MULTI_SITE_FALLBACK)) {
+                compareValue = -1;
+            } else if (siteName2.equals(MULTI_SITE_FALLBACK)) {
+                compareValue = 1;
+            } else {
+                compareValue = siteName1.compareTo(siteName2);
+            }
+            return compareValue;
+        }).map(this::createOptionDefinition).collect(Collectors.toList());
     }
 
     private Option createOptionDefinition(final String name) {
