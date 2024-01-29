@@ -71,6 +71,7 @@ You can configure the following settings in the module configuration by JCR or y
   * _de.ibmix.magkit.vanityurl.DefaultPublicUrlService_ (default) : Use of default base url and site configuration with context path replacement.
   * _de.ibmix.magkit.vanityurl.SimplePublicUrlService_ : Uses configured public prefix and removes the author context path.
 * _headlessEndpoint_ : is used for headless support and defines the pages rest endpoint which should be checked for vanity urls
+* _previewImage_ : image type of preview image. SVG and PNG is possible (default is SVG).
 
 #### Headless support (with version 1.6.1)
 

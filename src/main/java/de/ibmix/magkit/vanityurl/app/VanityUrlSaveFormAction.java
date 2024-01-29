@@ -20,9 +20,11 @@ package de.ibmix.magkit.vanityurl.app;
  * #L%
  */
 
-import de.ibmix.magkit.vanityurl.VanityUrlService;
 import com.machinezoo.noexception.Exceptions;
 import com.vaadin.ui.Notification;
+import de.ibmix.magkit.vanityurl.PreviewImageConfig;
+import de.ibmix.magkit.vanityurl.VanityUrlModule;
+import de.ibmix.magkit.vanityurl.VanityUrlService;
 import info.magnolia.cms.core.FileSystemHelper;
 import info.magnolia.i18nsystem.SimpleTranslator;
 import info.magnolia.jcr.util.NodeNameHelper;
@@ -41,12 +43,13 @@ import info.magnolia.ui.datasource.ItemResolver;
 import info.magnolia.ui.editor.EditorView;
 import info.magnolia.ui.form.field.upload.UploadReceiver;
 import info.magnolia.ui.observation.DatasourceObservation;
-import net.glxn.qrgen.QRCode;
+import net.glxn.qrgen.javase.QRCode;
 import org.apache.jackrabbit.value.ValueFactoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.jcr.Binary;
 import javax.jcr.Node;
 import javax.jcr.Property;
@@ -61,9 +64,11 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import static de.ibmix.magkit.vanityurl.PreviewImageConfig.ImageType.SVG;
 import static de.ibmix.magkit.vanityurl.VanityUrlService.NN_IMAGE;
 import static de.ibmix.magkit.vanityurl.VanityUrlService.PN_SITE;
 import static de.ibmix.magkit.vanityurl.VanityUrlService.PN_VANITY_URL;
+import static de.ibmix.magkit.vanityurl.VanityUrlService.getImageType;
 import static info.magnolia.cms.beans.runtime.File.PROPERTY_CONTENTTYPE;
 import static info.magnolia.cms.beans.runtime.File.PROPERTY_FILENAME;
 import static info.magnolia.cms.beans.runtime.File.PROPERTY_LASTMODIFIED;
@@ -87,12 +92,11 @@ public class VanityUrlSaveFormAction extends CommitAction<Node> {
     private static final Logger LOGGER = LoggerFactory.getLogger(VanityUrlSaveFormAction.class);
     private static final int QR_WIDTH = 500;
     private static final int QR_HEIGHT = 500;
-    private static final String MIME_TYPE = "image/png";
-    public static final String IMAGE_EXTENSION = ".png";
 
     private final AppContext _appContext;
     private final LocationController _locationController;
     private final ItemResolver<Node> _itemResolver;
+    private final Provider<VanityUrlModule> _vanityUrlModule;
     private SimpleTranslator _simpleTranslator;
     private VanityUrlService _vanityUrlService;
     private NodeNameHelper _nodeNameHelper;
@@ -100,11 +104,12 @@ public class VanityUrlSaveFormAction extends CommitAction<Node> {
 
     //CHECKSTYLE:OFF
     @Inject
-    public VanityUrlSaveFormAction(CommitActionDefinition definition, CloseHandler closeHandler, ValueContext<Node> valueContext, EditorView<Node> form, Datasource<Node> datasource, DatasourceObservation.Manual datasourceObservation, LocationController locationController, AppContext appContext, ItemResolver<Node> itemResolver) {
+    public VanityUrlSaveFormAction(CommitActionDefinition definition, CloseHandler closeHandler, ValueContext<Node> valueContext, EditorView<Node> form, Datasource<Node> datasource, DatasourceObservation.Manual datasourceObservation, LocationController locationController, AppContext appContext, ItemResolver<Node> itemResolver, final Provider<VanityUrlModule> vanityUrlModule) {
         super(definition, closeHandler, valueContext, form, datasource, datasourceObservation);
         _appContext = appContext;
         _locationController = locationController;
         _itemResolver = itemResolver;
+        _vanityUrlModule = vanityUrlModule;
     }
     //CHECKSTYLE:ON
 
@@ -168,8 +173,16 @@ public class VanityUrlSaveFormAction extends CommitAction<Node> {
         File tmpQrCodeFile = _fileSystemHelper.getTempDirectory();
         UploadReceiver uploadReceiver = new UploadReceiver(tmpQrCodeFile, _simpleTranslator);
 
-        try (FileOutputStream outputStream = (FileOutputStream) uploadReceiver.receiveUpload(fileName + IMAGE_EXTENSION, MIME_TYPE)) {
-            QRCode.from(url).withSize(QR_WIDTH, QR_HEIGHT).writeTo(outputStream);
+        final PreviewImageConfig.ImageType imageType = getImageType(_vanityUrlModule.get());
+        final String extension = imageType.getExtension();
+        final String mimeType = imageType.getMimeType();
+
+        try (FileOutputStream outputStream = (FileOutputStream) uploadReceiver.receiveUpload(fileName + extension, mimeType)) {
+            if (imageType == SVG) {
+                QRCode.from(url).svg(outputStream);
+            } else {
+                QRCode.from(url).withSize(QR_WIDTH, QR_HEIGHT).writeTo(outputStream);
+            }
             outputStream.flush();
         } catch (IOException e) {
             LOGGER.error("Error writing temp file for qr code.", e);
@@ -183,7 +196,7 @@ public class VanityUrlSaveFormAction extends CommitAction<Node> {
                 qrNode = node.addNode(NN_IMAGE, Resource.NAME);
             }
 
-            populateItem(qrCodeInputStream, qrNode, fileName);
+            populateItem(qrCodeInputStream, qrNode, fileName, mimeType);
         } catch (RepositoryException e) {
             LOGGER.error("Error on saving preview image for vanity url.", e);
         } catch (IOException e) {
@@ -191,7 +204,7 @@ public class VanityUrlSaveFormAction extends CommitAction<Node> {
         }
     }
 
-    private void populateItem(InputStream inputStream, Node qrCodeNode, final String fileName) {
+    private void populateItem(InputStream inputStream, Node qrCodeNode, final String fileName, String mimeType) {
         if (inputStream != null) {
             try {
                 Property data = getPropertyOrNull(qrCodeNode, JCR_DATA);
@@ -203,7 +216,7 @@ public class VanityUrlSaveFormAction extends CommitAction<Node> {
                 }
 
                 setProperty(qrCodeNode, PROPERTY_FILENAME, fileName);
-                setProperty(qrCodeNode, PROPERTY_CONTENTTYPE, MIME_TYPE);
+                setProperty(qrCodeNode, PROPERTY_CONTENTTYPE, mimeType);
                 Calendar calValue = new GregorianCalendar(TimeZone.getDefault());
                 setProperty(qrCodeNode, PROPERTY_LASTMODIFIED, calValue);
             } catch (RepositoryException re) {
@@ -241,4 +254,5 @@ public class VanityUrlSaveFormAction extends CommitAction<Node> {
     public void setFileSystemHelper(FileSystemHelper fileSystemHelper) {
         _fileSystemHelper = fileSystemHelper;
     }
+
 }
