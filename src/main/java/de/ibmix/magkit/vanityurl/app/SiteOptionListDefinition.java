@@ -33,19 +33,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static de.ibmix.magkit.vanityurl.VanityUrlService.DEF_SITE;
-
 /**
- * Extends for site select options.
+ * Data source implementation for site options.
  *
  * @author frank.sommer
  * @since 05.05.14
  */
 @DatasourceType("siteListDatasource")
-public class SiteSelectFieldDefinition extends OptionListDefinition {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SiteSelectFieldDefinition.class);
+public class SiteOptionListDefinition extends OptionListDefinition {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SiteOptionListDefinition.class);
 
-    public SiteSelectFieldDefinition() {
+    public SiteOptionListDefinition() {
         setName("sitelist");
     }
 
@@ -54,14 +52,9 @@ public class SiteSelectFieldDefinition extends OptionListDefinition {
         List<Option> options = new ArrayList<>();
 
         final Collection<Site> sites = getSites();
-        if (sites.isEmpty()) {
-            LOGGER.debug("No site nodes found.");
-            options.add(createOptionDefinition(DEF_SITE));
-        } else {
-            LOGGER.debug("{} site nodes found.", sites.size());
-            for (Site site : sites) {
-                options.add(createOptionDefinition(site.getName()));
-            }
+        LOGGER.debug("{} sites found.", sites.size());
+        for (Site site : sites) {
+            options.add(createOptionDefinition(site.getName()));
         }
         return options;
     }
