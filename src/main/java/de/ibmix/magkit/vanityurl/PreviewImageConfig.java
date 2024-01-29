@@ -20,8 +20,11 @@ package de.ibmix.magkit.vanityurl;
  * #L%
  */
 
+import java.util.Arrays;
+
 /**
  * Configuration class for preview image.
+ *
  * @author IBM iX
  */
 public class PreviewImageConfig {
@@ -44,20 +47,24 @@ public class PreviewImageConfig {
         PNG(".png", "image/png"),
         SVG(".svg", "image/svg+xml");
 
-        private final String _extention;
+        private final String _extension;
         private final String _mimeType;
 
-        ImageType(String extention, String mimeType) {
-            _extention = extention;
+        ImageType(String extension, String mimeType) {
+            _extension = extension;
             _mimeType = mimeType;
         }
 
-        public String getExtention() {
-            return _extention;
+        public String getExtension() {
+            return _extension;
         }
 
         public String getMimeType() {
             return _mimeType;
+        }
+
+        public static String getExtensionByMimeType(String mimeType) {
+            return Arrays.stream(ImageType.values()).filter(it -> it.getMimeType().equals(mimeType)).findFirst().map(ImageType::getExtension).orElse(SVG.getExtension());
         }
     }
 }

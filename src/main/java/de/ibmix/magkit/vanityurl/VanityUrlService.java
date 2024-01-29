@@ -20,8 +20,9 @@ package de.ibmix.magkit.vanityurl;
  * #L%
  */
 
-import info.magnolia.context.MgnlContext;
+import de.ibmix.magkit.vanityurl.PreviewImageConfig.ImageType;
 import info.magnolia.jcr.util.NodeUtil;
+import info.magnolia.jcr.util.PropertyUtil;
 import info.magnolia.link.LinkUtil;
 import org.apache.jackrabbit.value.StringValue;
 import org.slf4j.Logger;
@@ -40,9 +41,11 @@ import java.util.Collections;
 import java.util.List;
 
 import static de.ibmix.magkit.vanityurl.PreviewImageConfig.ImageType.SVG;
+import static info.magnolia.cms.beans.runtime.File.PROPERTY_CONTENTTYPE;
 import static info.magnolia.cms.util.RequestDispatchUtil.FORWARD_PREFIX;
 import static info.magnolia.cms.util.RequestDispatchUtil.PERMANENT_PREFIX;
 import static info.magnolia.cms.util.RequestDispatchUtil.REDIRECT_PREFIX;
+import static info.magnolia.context.MgnlContext.getJCRSession;
 import static info.magnolia.jcr.util.NodeUtil.asIterable;
 import static info.magnolia.jcr.util.NodeUtil.asList;
 import static info.magnolia.jcr.util.PropertyUtil.getString;
@@ -50,6 +53,7 @@ import static info.magnolia.link.LinkUtil.DEFAULT_EXTENSION;
 import static info.magnolia.repository.RepositoryConstants.WEBSITE;
 import static javax.jcr.query.Query.JCR_SQL2;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -211,9 +215,11 @@ public class VanityUrlService {
         String link = EMPTY;
         try {
             if (node != null && node.hasNode(NN_IMAGE)) {
-                link = getLinkFromNode(node.getNode(NN_IMAGE), false);
+                final Node binaryNode = node.getNode(NN_IMAGE);
+                link = getLinkFromNode(binaryNode, false);
                 link = removeStart(defaultString(link), _contextPath);
-                link = replace(link, "." + DEFAULT_EXTENSION, getImageType(_vanityUrlModule.get()).getExtention());
+                final String mimeType = defaultIfEmpty(PropertyUtil.getString(binaryNode, PROPERTY_CONTENTTYPE), PreviewImageConfig.ImageType.SVG.getMimeType());
+                link = replace(link, "." + DEFAULT_EXTENSION, ImageType.getExtensionByMimeType(mimeType));
             }
         } catch (RepositoryException e) {
             LOGGER.error("Error creating link to image property.", e);
@@ -250,7 +256,7 @@ public class VanityUrlService {
         List<Node> nodes = Collections.emptyList();
 
         try {
-            Session jcrSession = MgnlContext.getJCRSession(VanityUrlModule.WORKSPACE);
+            Session jcrSession = getJCRSession(VanityUrlModule.WORKSPACE);
             QueryManager queryManager = jcrSession.getWorkspace().getQueryManager();
             Query query = queryManager.createQuery(QUERY, JCR_SQL2);
             query.bindValue(PN_VANITY_URL, new StringValue(vanityUrl));
@@ -279,7 +285,7 @@ public class VanityUrlService {
     protected static Node getNodeFromId(final String nodeId) {
         Node node = null;
         try {
-            Session jcrSession = MgnlContext.getJCRSession(WEBSITE);
+            Session jcrSession = getJCRSession(WEBSITE);
             node = jcrSession.getNodeByIdentifier(nodeId);
         } catch (RepositoryException e) {
             LOGGER.info("Error getting node for {}.", nodeId);
@@ -292,8 +298,8 @@ public class VanityUrlService {
         return startsWithIgnoreCase(linkValue, "https://") || startsWithIgnoreCase(linkValue, "http://");
     }
 
-    public static PreviewImageConfig.ImageType getImageType(VanityUrlModule vanityUrlModule) {
-        PreviewImageConfig.ImageType imageType = SVG;
+    public static ImageType getImageType(VanityUrlModule vanityUrlModule) {
+        ImageType imageType = SVG;
         final PreviewImageConfig previewImageConfig = vanityUrlModule.getPreviewImage();
         if (previewImageConfig != null) {
             imageType = previewImageConfig.getType();

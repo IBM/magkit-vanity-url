@@ -7,6 +7,7 @@ import info.magnolia.repository.RepositoryConstants;
 import info.magnolia.test.ComponentsTestUtil;
 import info.magnolia.test.mock.MockWebContext;
 import info.magnolia.test.mock.jcr.MockNode;
+import info.magnolia.test.mock.jcr.MockProperty;
 import info.magnolia.test.mock.jcr.MockSession;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +15,7 @@ import org.junit.Test;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
+import static info.magnolia.cms.beans.runtime.File.PROPERTY_CONTENTTYPE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.ArgumentMatchers.any;
@@ -142,6 +144,7 @@ public class VanityUrlServiceTest {
     public void testImageLinkWithPngImage() {
         MockNode mockNode = new MockNode("node");
         MockNode image = new MockNode(VanityUrlService.NN_IMAGE);
+        image.addProperty(new MockProperty(PROPERTY_CONTENTTYPE, PreviewImageConfig.ImageType.PNG.getMimeType(), image));
         mockNode.addNode(image);
         assertThat(_service.createImageLink(mockNode), equalTo("/node/qrCode.png"));
     }
@@ -151,8 +154,6 @@ public class VanityUrlServiceTest {
         MockNode mockNode = new MockNode("node");
         MockNode image = new MockNode(VanityUrlService.NN_IMAGE);
         mockNode.addNode(image);
-        VanityUrlModule vanityUrlModule = new VanityUrlModule();
-        _service.setVanityUrlModule(() -> vanityUrlModule);
         assertThat(_service.createImageLink(mockNode), equalTo("/node/qrCode.svg"));
     }
 
@@ -202,9 +203,6 @@ public class VanityUrlServiceTest {
         when(publicUrlService.createTargetUrl(any())).thenReturn("http://www.aperto.de/page.html");
         when(publicUrlService.createVanityUrl(any())).thenReturn("http://www.aperto.de/vanity");
         vanityUrlModule.setPublicUrlService(publicUrlService);
-        PreviewImageConfig config = new PreviewImageConfig();
-        config.setType(PreviewImageConfig.ImageType.PNG);
-        vanityUrlModule.setPreviewImage(config);
         _service.setVanityUrlModule(() -> vanityUrlModule);
     }
 }

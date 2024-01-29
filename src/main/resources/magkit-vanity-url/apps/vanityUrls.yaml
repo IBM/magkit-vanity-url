@@ -15,13 +15,13 @@ subApps:
             editActions:
               items:
                 - name: preview
-                - name: viewCode
+                - name: downloadCode
         deletedItem:
           groups:
             editActions:
               items:
                 - name: preview
-                - name: viewCode
+                - name: downloadCode
     actions:
       export:
         format: XML
@@ -38,12 +38,10 @@ subApps:
             notDeleted:
               $type: jcrIsDeletedRule
               negate: true
-      viewCode:
-        class: info.magnolia.ui.contentapp.action.OpenLocationActionDefinition
-        implementationClass: de.ibmix.magkit.vanityurl.app.QrCodeViewAction
-        icon: icon-view
-        appName: vanityUrls
-        subAppId: preview
+      downloadCode:
+        class: info.magnolia.ui.api.action.ConfiguredActionDefinition
+        implementationClass: de.ibmix.magkit.vanityurl.app.QrCodeDownloadAction
+        icon: icon-download
         availability:
           nodeTypes:
             vanityUrl: mgnl:vanityUrl

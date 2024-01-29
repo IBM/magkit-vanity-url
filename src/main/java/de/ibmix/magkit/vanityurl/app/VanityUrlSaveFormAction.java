@@ -174,12 +174,12 @@ public class VanityUrlSaveFormAction extends CommitAction<Node> {
         UploadReceiver uploadReceiver = new UploadReceiver(tmpQrCodeFile, _simpleTranslator);
 
         final PreviewImageConfig.ImageType imageType = getImageType(_vanityUrlModule.get());
-        final String extention = imageType.getExtention();
+        final String extension = imageType.getExtension();
         final String mimeType = imageType.getMimeType();
 
-        try (FileOutputStream outputStream = (FileOutputStream) uploadReceiver.receiveUpload(fileName + extention, mimeType)) {
+        try (FileOutputStream outputStream = (FileOutputStream) uploadReceiver.receiveUpload(fileName + extension, mimeType)) {
             if (imageType == SVG) {
-                QRCode.from(url).withSize(QR_WIDTH, QR_HEIGHT).svg(outputStream);
+                QRCode.from(url).svg(outputStream);
             } else {
                 QRCode.from(url).withSize(QR_WIDTH, QR_HEIGHT).writeTo(outputStream);
             }
