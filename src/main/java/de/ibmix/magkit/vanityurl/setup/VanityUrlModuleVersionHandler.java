@@ -43,7 +43,7 @@ import static info.magnolia.repository.RepositoryConstants.CONFIG;
  */
 public class VanityUrlModuleVersionHandler extends DefaultModuleVersionHandler {
 
-    private final Task _addUriRepositoryMapping = new NodeExistsDelegateTask("Check repository mapping", "Add uri to repository mapping for vanityUrls if missing.", "/server/URI2RepositoryMapping/mappings/" + WORKSPACE, null,
+    private final Task _addUriRepositoryMapping = new NodeExistsDelegateTask("Check repository mapping", "Add uri to repository mapping for vanityUrls if missing.", CONFIG, "/server/URI2RepositoryMapping/mappings/" + WORKSPACE, null,
         new NodeBuilderTask("Add repository mapping", "", logging, CONFIG, "/server/URI2RepositoryMapping/mappings",
             addNode(WORKSPACE, ContentNode.NAME).then(
                 addProperty("URIPrefix", (Object) ("/" + WORKSPACE)),
