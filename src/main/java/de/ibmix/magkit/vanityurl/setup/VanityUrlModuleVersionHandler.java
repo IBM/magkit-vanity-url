@@ -23,7 +23,9 @@ package de.ibmix.magkit.vanityurl.setup;
 import info.magnolia.jcr.nodebuilder.task.NodeBuilderTask;
 import info.magnolia.module.DefaultModuleVersionHandler;
 import info.magnolia.module.InstallContext;
+import info.magnolia.module.delta.DeltaBuilder;
 import info.magnolia.module.delta.NodeExistsDelegateTask;
+import info.magnolia.module.delta.RemoveNodeTask;
 import info.magnolia.module.delta.Task;
 
 import java.util.ArrayList;
@@ -43,6 +45,12 @@ import static info.magnolia.repository.RepositoryConstants.CONFIG;
  */
 public class VanityUrlModuleVersionHandler extends DefaultModuleVersionHandler {
 
+    private final RemoveNodeTask _removeOldModuleConfig = new RemoveNodeTask("Remove old module config", "/modules/magnolia-vanity-url");
+
+    public VanityUrlModuleVersionHandler() {
+        register(DeltaBuilder.update("1.6.4", "Update for version 1.6.4").addTask(_removeOldModuleConfig));
+    }
+
     private final Task _addUriRepositoryMapping = new NodeExistsDelegateTask("Check repository mapping", "Add uri to repository mapping for vanityUrls if missing.", CONFIG, "/server/URI2RepositoryMapping/mappings/" + WORKSPACE, null,
         new NodeBuilderTask("Add repository mapping", "", logging, CONFIG, "/server/URI2RepositoryMapping/mappings",
             addNode(WORKSPACE, ContentNode.NAME).then(
@@ -57,6 +65,7 @@ public class VanityUrlModuleVersionHandler extends DefaultModuleVersionHandler {
     protected List<Task> getExtraInstallTasks(final InstallContext installContext) {
         List<Task> tasks = new ArrayList<>();
         tasks.add(_addUriRepositoryMapping);
+        tasks.add(_removeOldModuleConfig);
         return tasks;
     }
 }
