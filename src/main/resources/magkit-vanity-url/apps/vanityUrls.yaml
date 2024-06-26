@@ -133,6 +133,9 @@ subApps:
                 value: 302
               - name: forward
                 value: forward
+        description:
+          $type: textField
+          rows: 3
     actions:
       commit:
         $type: commitAction
