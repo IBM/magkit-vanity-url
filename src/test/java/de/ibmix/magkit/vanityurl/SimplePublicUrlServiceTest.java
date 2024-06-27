@@ -20,13 +20,12 @@ package de.ibmix.magkit.vanityurl;
  * #L%
  */
 
-
 import info.magnolia.test.mock.jcr.MockNode;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
 
 /**
  * Test for simple public url service ({@link SimplePublicUrlService}).
@@ -40,43 +39,43 @@ public class SimplePublicUrlServiceTest {
     @Test
     public void testExternalTarget() throws Exception {
         MockNode mockNode = new MockNode("node");
-        mockNode.setProperty(VanityUrlService.PN_VANITY_URL, "/aperto");
-        mockNode.setProperty(VanityUrlService.PN_LINK, "http://www.aperto.de");
+        mockNode.setProperty(VanityUrlService.PN_VANITY_URL, "/ibmix");
+        mockNode.setProperty(VanityUrlService.PN_LINK, "https://www.ibmix.de");
 
-        assertThat(_service.createTargetUrl(mockNode), equalTo("http://www.aperto.de"));
-        assertThat(_service.createVanityUrl(mockNode), equalTo("http://www.demo-project.com/context/aperto"));
+        assertThat(_service.createTargetUrl(mockNode), equalTo("https://www.ibmix.de"));
+        assertThat(_service.createVanityUrl(mockNode), equalTo("https://www.demo-project.com/context/ibmix"));
     }
 
     @Test
     public void testInternalTarget() throws Exception {
         MockNode mockNode = new MockNode("node");
-        mockNode.setProperty(VanityUrlService.PN_VANITY_URL, "/aperto");
+        mockNode.setProperty(VanityUrlService.PN_VANITY_URL, "/ibmix");
         mockNode.setProperty(VanityUrlService.PN_LINK, "123-456-789");
 
-        assertThat(_service.createTargetUrl(mockNode), equalTo("http://www.demo-project.com/context/internal/page.html"));
-        assertThat(_service.createVanityUrl(mockNode), equalTo("http://www.demo-project.com/context/aperto"));
+        assertThat(_service.createTargetUrl(mockNode), equalTo("https://www.demo-project.com/context/internal/page.html"));
+        assertThat(_service.createVanityUrl(mockNode), equalTo("https://www.demo-project.com/context/ibmix"));
     }
 
     @Test
     public void testInternalTargetWithConfiguredPrefix() throws Exception {
         MockNode mockNode = new MockNode("node");
-        mockNode.setProperty(VanityUrlService.PN_VANITY_URL, "/aperto");
+        mockNode.setProperty(VanityUrlService.PN_VANITY_URL, "/ibmix");
         mockNode.setProperty(VanityUrlService.PN_LINK, "123-456-789");
-        _service.setTargetServerPrefix("http://www.aperto.de");
+        _service.setTargetServerPrefix("https://www.ibmix.de");
 
-        assertThat(_service.createTargetUrl(mockNode), equalTo("http://www.aperto.de/internal/page.html"));
-        assertThat(_service.createVanityUrl(mockNode), equalTo("http://www.aperto.de/aperto"));
+        assertThat(_service.createTargetUrl(mockNode), equalTo("https://www.ibmix.de/internal/page.html"));
+        assertThat(_service.createVanityUrl(mockNode), equalTo("https://www.ibmix.de/ibmix"));
     }
 
     @Test
     public void testInternalTargetWithSlashEndingConfiguredPrefix() throws Exception {
         MockNode mockNode = new MockNode("node");
-        mockNode.setProperty(VanityUrlService.PN_VANITY_URL, "/aperto");
+        mockNode.setProperty(VanityUrlService.PN_VANITY_URL, "/ibmix");
         mockNode.setProperty(VanityUrlService.PN_LINK, "123-456-789");
-        _service.setTargetServerPrefix("http://www.aperto.de/");
+        _service.setTargetServerPrefix("https://www.ibmix.de/");
 
-        assertThat(_service.createTargetUrl(mockNode), equalTo("http://www.aperto.de/internal/page.html"));
-        assertThat(_service.createVanityUrl(mockNode), equalTo("http://www.aperto.de/aperto"));
+        assertThat(_service.createTargetUrl(mockNode), equalTo("https://www.ibmix.de/internal/page.html"));
+        assertThat(_service.createVanityUrl(mockNode), equalTo("https://www.ibmix.de/ibmix"));
     }
 
     @Before

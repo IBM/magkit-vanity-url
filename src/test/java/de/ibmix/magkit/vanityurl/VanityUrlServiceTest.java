@@ -80,10 +80,10 @@ public class VanityUrlServiceTest {
     @Test
     public void testTargetUrlExternal() throws Exception {
         MockNode mockNode = new MockNode("node");
-        mockNode.setProperty("link", "http://www.aperto.de");
+        mockNode.setProperty("link", "http://www.ibmix.de");
 
-        assertThat(_service.createRedirectUrl(mockNode, null), equalTo("redirect:http://www.aperto.de"));
-        assertThat(_service.createPreviewUrl(mockNode), equalTo("http://www.aperto.de"));
+        assertThat(_service.createRedirectUrl(mockNode, null), equalTo("redirect:http://www.ibmix.de"));
+        assertThat(_service.createPreviewUrl(mockNode), equalTo("http://www.ibmix.de"));
     }
 
     @Test
@@ -114,19 +114,19 @@ public class VanityUrlServiceTest {
     @Test
     public void testForwardWithInvalidUrl() throws Exception {
         MockNode mockNode = new MockNode("node");
-        mockNode.setProperty("link", "http://www.aperto.de");
+        mockNode.setProperty("link", "http://www.ibmix.de");
         mockNode.setProperty("type", "forward");
         assertThat(_service.createRedirectUrl(mockNode, null), equalTo(""));
     }
 
     @Test
     public void testPublicUrl() {
-        assertThat(_service.createPublicUrl(null), equalTo("http://www.aperto.de/page.html"));
+        assertThat(_service.createPublicUrl(null), equalTo("http://www.ibmix.de/page.html"));
     }
 
     @Test
     public void testVanityUrl() {
-        assertThat(_service.createVanityUrl(null), equalTo("http://www.aperto.de/vanity"));
+        assertThat(_service.createVanityUrl(null), equalTo("http://www.ibmix.de/vanity"));
     }
 
     @Test
@@ -200,8 +200,8 @@ public class VanityUrlServiceTest {
 
         VanityUrlModule vanityUrlModule = new VanityUrlModule();
         PublicUrlService publicUrlService = mock(PublicUrlService.class);
-        when(publicUrlService.createTargetUrl(any())).thenReturn("http://www.aperto.de/page.html");
-        when(publicUrlService.createVanityUrl(any())).thenReturn("http://www.aperto.de/vanity");
+        when(publicUrlService.createTargetUrl(any())).thenReturn("http://www.ibmix.de/page.html");
+        when(publicUrlService.createVanityUrl(any())).thenReturn("http://www.ibmix.de/vanity");
         vanityUrlModule.setPublicUrlService(publicUrlService);
         _service.setVanityUrlModule(() -> vanityUrlModule);
     }

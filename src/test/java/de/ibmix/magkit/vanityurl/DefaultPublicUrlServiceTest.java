@@ -27,8 +27,8 @@ import org.junit.Test;
 
 import static de.ibmix.magkit.vanityurl.VanityUrlService.PN_LINK;
 import static de.ibmix.magkit.vanityurl.VanityUrlService.PN_VANITY_URL;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -44,43 +44,43 @@ public class DefaultPublicUrlServiceTest {
     @Test
     public void testExternalTarget() throws Exception {
         MockNode mockNode = new MockNode("node");
-        mockNode.setProperty(PN_VANITY_URL, "/aperto");
-        mockNode.setProperty(PN_LINK, "http://www.aperto.de");
+        mockNode.setProperty(PN_VANITY_URL, "/ibmix");
+        mockNode.setProperty(PN_LINK, "http://www.ibmix.de");
 
-        assertThat(_service.createTargetUrl(mockNode), equalTo("http://www.aperto.de"));
-        assertThat(_service.createVanityUrl(mockNode), equalTo("http://www.aperto.de/aperto"));
+        assertThat(_service.createTargetUrl(mockNode), equalTo("http://www.ibmix.de"));
+        assertThat(_service.createVanityUrl(mockNode), equalTo("http://www.ibmix.de/ibmix"));
     }
 
     @Test
     public void testInternalTarget() throws Exception {
         MockNode mockNode = new MockNode("node");
-        mockNode.setProperty(PN_VANITY_URL, "/aperto");
+        mockNode.setProperty(PN_VANITY_URL, "/ibmix");
         mockNode.setProperty(PN_LINK, "123-456-789");
 
-        assertThat(_service.createTargetUrl(mockNode), equalTo("http://www.aperto.de/context/page.html"));
-        assertThat(_service.createVanityUrl(mockNode), equalTo("http://www.aperto.de/aperto"));
+        assertThat(_service.createTargetUrl(mockNode), equalTo("http://www.ibmix.de/context/page.html"));
+        assertThat(_service.createVanityUrl(mockNode), equalTo("http://www.ibmix.de/ibmix"));
     }
 
     @Test
     public void testExternalTargetWithConfiguredTargetContextPath() throws Exception {
         MockNode mockNode = new MockNode("node");
-        mockNode.setProperty(PN_VANITY_URL, "/aperto");
-        mockNode.setProperty(PN_LINK, "http://www.aperto.de");
+        mockNode.setProperty(PN_VANITY_URL, "/ibmix");
+        mockNode.setProperty(PN_LINK, "http://www.ibmix.de");
         _service.setTargetContextPath("/public");
 
-        assertThat(_service.createTargetUrl(mockNode), equalTo("http://www.aperto.de"));
-        assertThat(_service.createVanityUrl(mockNode), equalTo("http://www.aperto.de/public/aperto"));
+        assertThat(_service.createTargetUrl(mockNode), equalTo("http://www.ibmix.de"));
+        assertThat(_service.createVanityUrl(mockNode), equalTo("http://www.ibmix.de/public/ibmix"));
     }
 
     @Test
     public void testInternalTargetWithConfiguredTargetContextPath() throws Exception {
         MockNode mockNode = new MockNode("node");
-        mockNode.setProperty(PN_VANITY_URL, "/aperto");
+        mockNode.setProperty(PN_VANITY_URL, "/ibmix");
         mockNode.setProperty(PN_LINK, "123-456-789");
         _service.setTargetContextPath("/public");
 
-        assertThat(_service.createTargetUrl(mockNode), equalTo("http://www.aperto.de/context/page.html"));
-        assertThat(_service.createVanityUrl(mockNode), equalTo("http://www.aperto.de/public/aperto"));
+        assertThat(_service.createTargetUrl(mockNode), equalTo("http://www.ibmix.de/context/page.html"));
+        assertThat(_service.createVanityUrl(mockNode), equalTo("http://www.ibmix.de/public/ibmix"));
     }
 
     @Before
@@ -88,12 +88,12 @@ public class DefaultPublicUrlServiceTest {
         _service = new DefaultPublicUrlService() {
             @Override
             public String getExternalLinkFromId(final String nodeId) {
-                return "http://www.aperto.de/context/page.html";
+                return "http://www.ibmix.de/context/page.html";
             }
         };
 
         ServerConfiguration serverConfiguration = mock(ServerConfiguration.class);
-        when(serverConfiguration.getDefaultBaseUrl()).thenReturn("http://www.aperto.de/author");
+        when(serverConfiguration.getDefaultBaseUrl()).thenReturn("http://www.ibmix.de/author");
         _service.setServerConfiguration(serverConfiguration);
         _service.setContextPath("/author");
     }
