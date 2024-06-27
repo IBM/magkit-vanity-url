@@ -42,7 +42,7 @@ public class VanityUrlModule {
     private String _headlessEndpoint;
 
     public Map<String, String> getExcludes() {
-        return _excludes == null ? Collections.<String, String>emptyMap() : _excludes;
+        return _excludes == null ? Collections.emptyMap() : _excludes;
     }
 
     public void setExcludes(Map<String, String> excludes) {

@@ -52,7 +52,7 @@ public class SimplePublicUrlService implements PublicUrlService {
     @Named(value = "magnolia.contextpath")
     private String _contextPath = EMPTY;
 
-    private String _targetServerPrefix = "http://www.demo-project.com/context";
+    private String _targetServerPrefix = "https://www.demo-project.com/context";
 
     @Override
     public String createVanityUrl(final Node node) {
