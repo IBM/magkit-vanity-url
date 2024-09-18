@@ -37,7 +37,7 @@ You can browse available artifacts through [Magnolia's Nexus](https://nexus.magn
 * Version 1.5.x is compatible with Magnolia 5.6.x, 5.7.x, 6.1.x and 6.2.x
 * Version 1.6.x is compatible with Magnolia 6.2.x (new UI support)
 
-See also the [change log](CHANGELOG.md)
+See also the [change log](CHANGELOG.md) and [security advices](SECURITY.md)
 
 ### Magnolia Module Configuration
 
