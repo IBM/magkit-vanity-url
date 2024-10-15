@@ -50,53 +50,41 @@ subApps:
               $type: jcrIsDeletedRule
               negate: true
     workbench:
+      $type: filteringWorkbench
+      sortFilterOptions: true
+      filters:
+        - name: jcrPublishingStatus
+          icon: icon-spinner-full
+          $type: dropdownMultiselect
+          datasource:
+            $type: enumDatasource
+            enumeration: info.magnolia.ui.contentapp.configuration.column.StatusColumnDefinition$PublicationStatus
+            sorted: true
       contentViews:
-        list:
-          columns: !override
-            name:
-              $type: vanityUrlColumn
-              name: vanityUrl
-              nodeTypeToIcon:
-                "mgnl:folder": icon-folder-l
-                "mgnl:vanityUrl": icon-favorites
-            site:
-              width: 100
-              filterComponent:
-                $type: textField
-            link:
-              valueProvider: de.ibmix.magkit.vanityurl.app.VanityLinkProvider
-              width: 400
-              filterComponent:
-                $type: textField
-            activationStatus:
-              $type: jcrStatusColumn
-            lastModified:
-              $type: dateColumn
-              name: mgnl:lastModified
-              width: 190
         tree:
+          filterableColumns: false
           columns: !override
             name:
-              $type: vanityUrlColumn
+              $type: jcrComponentColumn
               name: vanityUrl
-              nodeTypeToIcon:
-                "mgnl:folder": icon-folder-l
-                "mgnl:vanityUrl": icon-favorites
+              nodeTypeToComponents:
+                "mgnl:folder":
+                  icon: icon-folder-l
+                "mgnl:vanityUrl":
+                  icon: icon-favorites
             site:
               width: 100
-              filterComponent:
-                $type: textField
             link:
               valueProvider: de.ibmix.magkit.vanityurl.app.VanityLinkProvider
               width: 400
-              filterComponent:
-                $type: textField
-            activationStatus:
-              $type: jcrStatusColumn
+            jcrPublishingStatus:
+              $type: statusColumn
             lastModified:
               $type: dateColumn
               name: mgnl:lastModified
               width: 190
+    statusBar:
+      implementationClass: info.magnolia.ui.filteringapp.browser.FilteringStatusBar
   detail:
     datasource:
       describeByProperty: vanityUrl

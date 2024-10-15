@@ -37,11 +37,11 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import java.io.InputStream;
 
+import static com.google.common.net.HttpHeaders.CONTENT_DISPOSITION;
 import static com.vaadin.util.EncodeUtil.rfc5987Encode;
 import static de.ibmix.magkit.vanityurl.VanityUrlService.NN_IMAGE;
 import static info.magnolia.cms.beans.runtime.File.PROPERTY_CONTENTTYPE;
 import static info.magnolia.cms.beans.runtime.File.PROPERTY_FILENAME;
-import static javax.ws.rs.core.HttpHeaders.CONTENT_DISPOSITION;
 import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
 import static org.apache.jackrabbit.JcrConstants.JCR_DATA;
 

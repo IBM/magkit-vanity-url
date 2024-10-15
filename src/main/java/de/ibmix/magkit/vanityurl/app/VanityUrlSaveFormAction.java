@@ -41,7 +41,6 @@ import info.magnolia.ui.contentapp.action.CommitAction;
 import info.magnolia.ui.contentapp.action.CommitActionDefinition;
 import info.magnolia.ui.datasource.ItemResolver;
 import info.magnolia.ui.editor.EditorView;
-import info.magnolia.ui.form.field.upload.UploadReceiver;
 import info.magnolia.ui.observation.DatasourceObservation;
 import net.glxn.qrgen.javase.QRCode;
 import org.apache.jackrabbit.value.ValueFactoryImpl;
@@ -170,14 +169,34 @@ public class VanityUrlSaveFormAction extends CommitAction<Node> {
     private void setPreviewImage(final Node node) {
         String url = _vanityUrlService.createVanityUrl(node);
         String fileName = trim(strip(getString(node, PN_VANITY_URL, ""), "/")).replace("/", "-");
-        File tmpQrCodeFile = _fileSystemHelper.getTempDirectory();
-        UploadReceiver uploadReceiver = new UploadReceiver(tmpQrCodeFile, _simpleTranslator);
 
         final PreviewImageConfig.ImageType imageType = getImageType(_vanityUrlModule.get());
-        final String extension = imageType.getExtension();
-        final String mimeType = imageType.getMimeType();
+        final File qrCodeFile = generateQrCode(url, fileName, imageType);
 
-        try (FileOutputStream outputStream = (FileOutputStream) uploadReceiver.receiveUpload(fileName + extension, mimeType)) {
+        saveToNode(node, qrCodeFile, fileName, imageType);
+    }
+
+    private void saveToNode(Node node, File qrCodeFile, String fileName, PreviewImageConfig.ImageType imageType) {
+        try (FileInputStream qrCodeInputStream = new FileInputStream(qrCodeFile)) {
+            Node qrNode;
+            if (node.hasNode(NN_IMAGE)) {
+                qrNode = node.getNode(NN_IMAGE);
+            } else {
+                qrNode = node.addNode(NN_IMAGE, Resource.NAME);
+            }
+
+            populateItem(qrNode, qrCodeInputStream, fileName, imageType.getMimeType());
+        } catch (RepositoryException e) {
+            LOGGER.error("Error on saving preview image for vanity url.", e);
+        } catch (IOException e) {
+            LOGGER.error("Error reading qr image temp file.", e);
+        }
+    }
+
+    private File generateQrCode(String url, String fileName, PreviewImageConfig.ImageType imageType) {
+        File tmpQrCodeFile = new File(_fileSystemHelper.getTempDirectory(), fileName + imageType.getExtension());
+
+        try (FileOutputStream outputStream = new FileOutputStream(tmpQrCodeFile)) {
             if (imageType == SVG) {
                 QRCode.from(url).svg(outputStream);
             } else {
@@ -188,40 +207,25 @@ public class VanityUrlSaveFormAction extends CommitAction<Node> {
             LOGGER.error("Error writing temp file for qr code.", e);
         }
 
-        try (FileInputStream qrCodeInputStream = new FileInputStream(uploadReceiver.getFile())) {
-            Node qrNode;
-            if (node.hasNode(NN_IMAGE)) {
-                qrNode = node.getNode(NN_IMAGE);
-            } else {
-                qrNode = node.addNode(NN_IMAGE, Resource.NAME);
-            }
-
-            populateItem(qrCodeInputStream, qrNode, fileName, mimeType);
-        } catch (RepositoryException e) {
-            LOGGER.error("Error on saving preview image for vanity url.", e);
-        } catch (IOException e) {
-            LOGGER.error("Error reading qr image temp file.", e);
-        }
+        return tmpQrCodeFile;
     }
 
-    private void populateItem(InputStream inputStream, Node qrCodeNode, final String fileName, String mimeType) {
-        if (inputStream != null) {
-            try {
-                Property data = getPropertyOrNull(qrCodeNode, JCR_DATA);
-                Binary binary = ValueFactoryImpl.getInstance().createBinary(inputStream);
-                if (data == null) {
-                    qrCodeNode.setProperty(JCR_DATA, binary);
-                } else {
-                    data.setValue(binary);
-                }
-
-                setProperty(qrCodeNode, PROPERTY_FILENAME, fileName);
-                setProperty(qrCodeNode, PROPERTY_CONTENTTYPE, mimeType);
-                Calendar calValue = new GregorianCalendar(TimeZone.getDefault());
-                setProperty(qrCodeNode, PROPERTY_LASTMODIFIED, calValue);
-            } catch (RepositoryException re) {
-                LOGGER.error("Could not get Binary. Upload will not be performed", re);
+    private void populateItem(Node qrCodeNode, InputStream inputStream, final String fileName, String mimeType) {
+        try {
+            Property data = getPropertyOrNull(qrCodeNode, JCR_DATA);
+            Binary binary = ValueFactoryImpl.getInstance().createBinary(inputStream);
+            if (data == null) {
+                qrCodeNode.setProperty(JCR_DATA, binary);
+            } else {
+                data.setValue(binary);
             }
+
+            setProperty(qrCodeNode, PROPERTY_FILENAME, fileName);
+            setProperty(qrCodeNode, PROPERTY_CONTENTTYPE, mimeType);
+            Calendar calValue = new GregorianCalendar(TimeZone.getDefault());
+            setProperty(qrCodeNode, PROPERTY_LASTMODIFIED, calValue);
+        } catch (RepositoryException re) {
+            LOGGER.error("Could not get Binary. Upload will not be performed", re);
         }
     }
 

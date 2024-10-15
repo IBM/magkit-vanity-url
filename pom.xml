@@ -4,10 +4,10 @@
     <parent>
         <groupId>de.ibmix.magkit</groupId>
         <artifactId>magkit-pom</artifactId>
-        <version>1.0.6</version>
+        <version>1.1.0-SNAPSHOT</version>
     </parent>
     <artifactId>magkit-vanity-url</artifactId>
-    <version>1.6.5-SNAPSHOT</version>
+    <version>1.7.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>magkit-vanity-url Magnolia Module</name>
 
@@ -20,24 +20,23 @@
     <dependencies>
         <dependency>
             <groupId>info.magnolia.ui</groupId>
-            <artifactId>magnolia-ui-framework-compatibility</artifactId>
+            <artifactId>magnolia-ui-framework-jcr</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>info.magnolia.core</groupId>
             <artifactId>magnolia-virtual-uri</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>info.magnolia.types</groupId>
             <artifactId>magnolia-content-types</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>info.magnolia.site</groupId>
-            <artifactId>magnolia-site</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>info.magnolia.site</groupId>
-            <artifactId>magnolia-site-app</artifactId>
+            <artifactId>magnolia-site-jcr</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.kenglxn.QRGen</groupId>
