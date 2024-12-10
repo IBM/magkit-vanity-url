@@ -7,7 +7,7 @@
         <version>1.1.0</version>
     </parent>
     <artifactId>magkit-vanity-url</artifactId>
-    <version>1.7.0-SNAPSHOT</version>
+    <version>1.7.0</version>
     <packaging>jar</packaging>
     <name>magkit-vanity-url Magnolia Module</name>
 
@@ -88,7 +88,7 @@
         <url>https://github.com/IBM/magkit-vanity-url.git</url>
         <connection>scm:git:https://github.com/IBM/magkit-vanity-url.git</connection>
         <developerConnection>scm:git:https://github.com/IBM/magkit-vanity-url.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>magkit-vanity-url-1.7.0</tag>
     </scm>
 
     <repositories>
