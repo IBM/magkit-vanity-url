@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [1.7.0] - 2024-12-10
+
 - upgrade module to Magnolia 6.3
 - ugrade to Java 17
 - use new content app ui framework
