@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ## [1.7.0] - 2024-12-10
 
+### Changed
 - upgrade module to Magnolia 6.3
 - ugrade to Java 17
 - use new content app ui framework
@@ -39,7 +40,8 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Migrate UI and app support to Magnolia 6.2 standard
 
-[unreleased]: https://github.com/IBM/magkit-vanity-url/compare/magkit-vanity-url-1.6.4...HEAD
+[Unreleased]: https://github.com/IBM/magkit-vanity-url/compare/magkit-vanity-url-1.7.0...HEAD
+[1.7.0]: https://github.com/IBM/magkit-vanity-url/releases/tag/magkit-vanity-url-1.7.0
 [1.6.4]: https://github.com/IBM/magkit-vanity-url/releases/tag/magkit-vanity-url-1.6.4
 [1.6.3]: https://github.com/IBM/magkit-vanity-url/releases/tag/magkit-vanity-url-1.6.3
 [1.6.2]: https://github.com/IBM/magkit-vanity-url/releases/tag/magkit-vanity-url-1.6.2
