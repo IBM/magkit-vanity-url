@@ -101,6 +101,7 @@ subApps:
         site:
           $type: comboBoxField
           defaultValue: fallback
+          required: true
           datasource:
             $type: siteListDatasource
         link:
