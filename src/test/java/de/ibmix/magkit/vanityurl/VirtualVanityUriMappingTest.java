@@ -24,7 +24,7 @@ import info.magnolia.cms.core.AggregationState;
 import info.magnolia.context.MgnlContext;
 import info.magnolia.context.SystemContext;
 import info.magnolia.context.WebContext;
-import info.magnolia.module.ModuleRegistry;
+import info.magnolia.module.site.NullSite;
 import info.magnolia.test.ComponentsTestUtil;
 import info.magnolia.test.mock.jcr.MockNode;
 import info.magnolia.virtualuri.VirtualUriMapping;
@@ -81,7 +81,7 @@ public class VirtualVanityUriMappingTest {
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         _uriMapping = new VirtualVanityUriMapping();
 
         Provider moduleProvider = mock(Provider.class);
@@ -94,19 +94,14 @@ public class VirtualVanityUriMappingTest {
 
         Provider serviceProvider = mock(Provider.class);
         VanityUrlService vanityUrlService = mock(VanityUrlService.class);
-        when(vanityUrlService.queryForVanityUrlNode("/home", "default")).thenReturn(null);
+        when(vanityUrlService.queryForVanityUrlNode("/home", NullSite.SITE_NAME)).thenReturn(null);
 
         MockNode mockNode = new MockNode("xmas");
-        when(vanityUrlService.queryForVanityUrlNode("/xmas", "default")).thenReturn(mockNode);
+        when(vanityUrlService.queryForVanityUrlNode("/xmas", NullSite.SITE_NAME)).thenReturn(mockNode);
 
         when(vanityUrlService.createRedirectUrl(mockNode, null)).thenReturn("redirect:/internal/page.html");
         when(serviceProvider.get()).thenReturn(vanityUrlService);
         _uriMapping.setVanityUrlService(serviceProvider);
-
-        Provider registryProvider = mock(Provider.class);
-        ModuleRegistry moduleRegistry = mock(ModuleRegistry.class);
-        when(registryProvider.get()).thenReturn(moduleRegistry);
-        _uriMapping.setModuleRegistry(registryProvider);
 
         initWebContext();
         initComponentProvider();
@@ -125,7 +120,7 @@ public class VirtualVanityUriMappingTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         MgnlContext.setInstance(null);
     }
 }

@@ -20,9 +20,10 @@ package de.ibmix.magkit.vanityurl;
  * #L%
  */
 
+import info.magnolia.cms.core.AggregationState;
 import info.magnolia.context.MgnlContext;
-import info.magnolia.module.ModuleRegistry;
 import info.magnolia.module.site.ExtendedAggregationState;
+import info.magnolia.module.site.NullSite;
 import info.magnolia.module.site.Site;
 import info.magnolia.virtualuri.VirtualUriMapping;
 import org.slf4j.Logger;
@@ -37,7 +38,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.regex.PatternSyntaxException;
 
-import static de.ibmix.magkit.vanityurl.VanityUrlService.DEF_SITE;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -52,7 +52,6 @@ public class VirtualVanityUriMapping implements VirtualUriMapping {
 
     private Provider<VanityUrlModule> _vanityUrlModule;
     private Provider<VanityUrlService> _vanityUrlService;
-    private Provider<ModuleRegistry> _moduleRegistry;
 
     @Inject
     public void setVanityUrlModule(final Provider<VanityUrlModule> vanityUrlModule) {
@@ -62,11 +61,6 @@ public class VirtualVanityUriMapping implements VirtualUriMapping {
     @Inject
     public void setVanityUrlService(final Provider<VanityUrlService> vanityUrlService) {
         _vanityUrlService = vanityUrlService;
-    }
-
-    @Inject
-    public void setModuleRegistry(final Provider<ModuleRegistry> moduleRegistry) {
-        _moduleRegistry = moduleRegistry;
     }
 
     @Override
@@ -113,7 +107,7 @@ public class VirtualVanityUriMapping implements VirtualUriMapping {
         Node node = null;
 
         try {
-            // do it in system context, so the anonymous need no read rights for using vanity urls
+            // do it in the system context, so the anonymous need no read rights for using vanity urls
             node = MgnlContext.doInSystemContext(
                 (MgnlContext.Op<Node, RepositoryException>) () -> _vanityUrlService.get().queryForVanityUrlNode(vanityUrl, siteName)
             );
@@ -136,14 +130,9 @@ public class VirtualVanityUriMapping implements VirtualUriMapping {
     }
 
     protected String retrieveSite(String vanityUrl) {
-        String siteName = DEF_SITE;
-
-        if (_moduleRegistry.get().isModuleRegistered("multisite")) {
-            Site site = ((ExtendedAggregationState) MgnlContext.getAggregationState()).getSite();
-            siteName = site.getName();
-        }
-
-        return siteName;
+        final AggregationState aggregationState = MgnlContext.getAggregationState();
+        Site site = aggregationState instanceof ExtendedAggregationState ? ((ExtendedAggregationState) aggregationState).getSite() : new NullSite();
+        return site.getName();
     }
 
     @Override

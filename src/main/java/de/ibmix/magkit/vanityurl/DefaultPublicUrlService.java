@@ -66,7 +66,7 @@ public class DefaultPublicUrlService implements PublicUrlService {
     @Override
     public String createVanityUrl(final Node node) {
         LOGGER.debug("Create vanity url for node {}", getPathIfPossible(node));
-        // default base url is the default
+        // the default base url is the default
         String baseUrl = _serverConfiguration.getDefaultBaseUrl();
         baseUrl = replaceContextPath(baseUrl);
 
@@ -88,7 +88,7 @@ public class DefaultPublicUrlService implements PublicUrlService {
      * For public replacing the context path.
      *
      * @param link for replacing
-     * @return link with replaced context path
+     * @return link with the replaced context path
      */
     private String replaceContextPath(String link) {
         String changedLink = link;

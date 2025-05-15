@@ -24,6 +24,7 @@ import de.ibmix.magkit.vanityurl.PreviewImageConfig.ImageType;
 import info.magnolia.jcr.util.NodeUtil;
 import info.magnolia.jcr.util.PropertyUtil;
 import info.magnolia.link.LinkUtil;
+import info.magnolia.module.site.NullSite;
 import org.apache.jackrabbit.value.StringValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +72,8 @@ import static org.apache.commons.lang3.StringUtils.substringAfter;
 public class VanityUrlService {
     private static final Logger LOGGER = LoggerFactory.getLogger(VanityUrlService.class);
 
-    private static final String QUERY = "select * from [" + VanityUrlModule.NT_VANITY + "] where vanityUrl = $vanityUrl and site = $site";
+    private static final String QUERY = "select * from [" + VanityUrlModule.NT_VANITY + "] where vanityUrl = $vanityUrl";
+    private static final String QUERY_WITH_SITE = QUERY + " and site = $site";
     public static final String NN_IMAGE = "qrCode";
     public static final String DEF_SITE = "default";
     public static final String PN_SITE = "site";
@@ -258,9 +260,17 @@ public class VanityUrlService {
         try {
             Session jcrSession = getJCRSession(VanityUrlModule.WORKSPACE);
             QueryManager queryManager = jcrSession.getWorkspace().getQueryManager();
-            Query query = queryManager.createQuery(QUERY, JCR_SQL2);
-            query.bindValue(PN_VANITY_URL, new StringValue(vanityUrl));
-            query.bindValue(PN_SITE, new StringValue(siteName));
+
+            Query query;
+            if (NullSite.SITE_NAME.equals(siteName)) {
+                query = queryManager.createQuery(QUERY, JCR_SQL2);
+                query.bindValue(PN_VANITY_URL, new StringValue(vanityUrl));
+            } else {
+                query = queryManager.createQuery(QUERY_WITH_SITE, JCR_SQL2);
+                query.bindValue(PN_VANITY_URL, new StringValue(vanityUrl));
+                query.bindValue(PN_SITE, new StringValue(siteName));
+            }
+
             QueryResult queryResult = query.execute();
             nodes = asList(asIterable(queryResult.getNodes()));
         } catch (RepositoryException e) {

@@ -20,6 +20,7 @@ package de.ibmix.magkit.vanityurl.app;
  * #L%
  */
 
+import info.magnolia.module.site.NullSite;
 import info.magnolia.module.site.Site;
 import info.magnolia.module.site.SiteManager;
 import info.magnolia.objectfactory.Components;
@@ -30,6 +31,8 @@ import info.magnolia.ui.datasource.optionlist.OptionListDefinition;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static de.ibmix.magkit.vanityurl.VanityUrlService.DEF_SITE;
 
 /**
  * Data source implementation for site options.
@@ -62,10 +65,11 @@ public class SiteOptionListDefinition extends OptionListDefinition {
     }
 
     private Option createOptionDefinition(final String name) {
+        String optionName = name.equals(NullSite.SITE_NAME) ? DEF_SITE : name;
         final Option def = new Option();
-        def.setName(name);
-        def.setLabel(name);
-        def.setValue(name);
+        def.setName(optionName);
+        def.setLabel(optionName);
+        def.setValue(optionName);
         return def;
     }
 
