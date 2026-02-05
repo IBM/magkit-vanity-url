@@ -37,18 +37,18 @@ import info.magnolia.ui.api.app.AppContext;
 import info.magnolia.ui.api.location.LocationController;
 import info.magnolia.ui.contentapp.ContentBrowserSubApp;
 import info.magnolia.ui.contentapp.Datasource;
-import info.magnolia.ui.contentapp.action.CommitAction;
-import info.magnolia.ui.contentapp.action.CommitActionDefinition;
+import info.magnolia.ui.contentapp.detail.action.SaveDetailSubAppAction;
+import info.magnolia.ui.contentapp.detail.action.SaveDetailSubAppActionDefinition;
 import info.magnolia.ui.datasource.ItemResolver;
 import info.magnolia.ui.editor.EditorView;
 import info.magnolia.ui.observation.DatasourceObservation;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 import net.glxn.qrgen.javase.QRCode;
 import org.apache.jackrabbit.value.ValueFactoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.jcr.Binary;
 import javax.jcr.Node;
 import javax.jcr.Property;
@@ -87,7 +87,7 @@ import static org.apache.jackrabbit.JcrConstants.JCR_DATA;
  * @author frank.sommer
  * @since 28.05.14
  */
-public class VanityUrlSaveFormAction extends CommitAction<Node> {
+public class VanityUrlSaveFormAction extends SaveDetailSubAppAction<Node> {
     private static final Logger LOGGER = LoggerFactory.getLogger(VanityUrlSaveFormAction.class);
     private static final int QR_WIDTH = 500;
     private static final int QR_HEIGHT = 500;
@@ -103,12 +103,16 @@ public class VanityUrlSaveFormAction extends CommitAction<Node> {
 
     //CHECKSTYLE:OFF
     @Inject
-    public VanityUrlSaveFormAction(CommitActionDefinition definition, CloseHandler closeHandler, ValueContext<Node> valueContext, EditorView<Node> form, Datasource<Node> datasource, DatasourceObservation.Manual datasourceObservation, LocationController locationController, AppContext appContext, ItemResolver<Node> itemResolver, final Provider<VanityUrlModule> vanityUrlModule) {
-        super(definition, closeHandler, valueContext, form, datasource, datasourceObservation);
-        _appContext = appContext;
-        _locationController = locationController;
-        _itemResolver = itemResolver;
-        _vanityUrlModule = vanityUrlModule;
+    public VanityUrlSaveFormAction(SaveDetailSubAppActionDefinition definition, CloseHandler closeHandler, ValueContext<Node> valueContext, EditorView<Node> form, Datasource<Node> datasource, DatasourceObservation.Manual datasourceObservation, LocationController locationController, AppContext appContext, ItemResolver<Node> itemResolver, AppContext _appContext, LocationController _locationController, ItemResolver<Node> _itemResolver, Provider<VanityUrlModule> _vanityUrlModule, SimpleTranslator _simpleTranslator, VanityUrlService _vanityUrlService, NodeNameHelper _nodeNameHelper, FileSystemHelper _fileSystemHelper) {
+        super(definition, closeHandler, valueContext, form, datasource, datasourceObservation, locationController, appContext, itemResolver);
+        this._appContext = _appContext;
+        this._locationController = _locationController;
+        this._itemResolver = _itemResolver;
+        this._vanityUrlModule = _vanityUrlModule;
+        this._simpleTranslator = _simpleTranslator;
+        this._vanityUrlService = _vanityUrlService;
+        this._nodeNameHelper = _nodeNameHelper;
+        this._fileSystemHelper = _fileSystemHelper;
     }
     //CHECKSTYLE:ON
 
@@ -147,7 +151,7 @@ public class VanityUrlSaveFormAction extends CommitAction<Node> {
                 setNodeName(item);
                 setPreviewImage(item);
 
-                getDatasource().commit(item);
+                getDatasource().save(item);
                 getDatasourceObservation().trigger();
             }
         ));

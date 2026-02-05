@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>de.ibmix.magkit</groupId>
@@ -14,6 +15,9 @@
     <inceptionYear>2013</inceptionYear>
 
     <properties>
+        <!-- override parent pom -->
+        <version.magnolia>6.4.2</version.magnolia>
+
         <qrgen.version>3.0.1</qrgen.version>
     </properties>
 
@@ -35,6 +39,11 @@
         </dependency>
         <dependency>
             <groupId>info.magnolia.site</groupId>
+            <artifactId>magnolia-site</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>info.magnolia.site</groupId>
             <artifactId>magnolia-site-jcr</artifactId>
             <scope>provided</scope>
         </dependency>
@@ -45,20 +54,20 @@
         </dependency>
 
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>javax.servlet.jsp-api</artifactId>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
 
         <!-- TEST -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

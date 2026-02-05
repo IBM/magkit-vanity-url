@@ -22,8 +22,8 @@ package de.ibmix.magkit.vanityurl;
 
 import info.magnolia.cms.beans.config.URI2RepositoryMapping;
 import info.magnolia.module.site.SiteManager;
+import jakarta.inject.Inject;
 
-import javax.inject.Inject;
 import javax.jcr.Node;
 import java.net.URI;
 import java.util.Map;

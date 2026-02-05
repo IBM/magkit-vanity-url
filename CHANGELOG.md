@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+- upgrade module to Magnolia 6.4
 
 ## [1.7.0] - 2024-12-10
 

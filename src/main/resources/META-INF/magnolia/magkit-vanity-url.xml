@@ -49,6 +49,9 @@
             <name>ui-framework-jcr</name>
             <version>${version.magnolia}/*</version>
         </dependency>
+        <dependency>
+            <name>site</name>
+        </dependency>
     </dependencies>
 
     <repositories>
