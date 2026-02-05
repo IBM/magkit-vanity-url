@@ -25,23 +25,24 @@ import info.magnolia.context.MgnlContext;
 import info.magnolia.context.SystemContext;
 import info.magnolia.context.WebContext;
 import info.magnolia.module.site.NullSite;
-import info.magnolia.test.ComponentsTestUtil;
+import info.magnolia.test.junit5.Component;
+import info.magnolia.test.junit5.MagnoliaTest;
 import info.magnolia.test.mock.jcr.MockNode;
 import info.magnolia.virtualuri.VirtualUriMapping;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import jakarta.inject.Provider;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import javax.inject.Provider;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -51,6 +52,7 @@ import static org.mockito.Mockito.when;
  * @author frank.sommer
  * @since 28.05.14
  */
+@MagnoliaTest
 public class VirtualVanityUriMappingTest {
 
     private VirtualVanityUriMapping _uriMapping;
@@ -58,33 +60,35 @@ public class VirtualVanityUriMappingTest {
     @Test
     public void testRootRequest() throws Exception {
         Optional<VirtualUriMapping.Result> mappingResult = _uriMapping.mapUri(new URI("/"));
-        assertThat(mappingResult, is(Optional.empty()));
+        assertTrue(mappingResult.isEmpty());
     }
 
     @Test
     public void testPageRequest() throws Exception {
         Optional<VirtualUriMapping.Result> mappingResult = _uriMapping.mapUri(new URI("/home.html"));
-        assertThat(mappingResult.isPresent(), is(false));
+        assertFalse(mappingResult.isPresent());
     }
 
     @Test
     public void testVanityUrlWithoutTarget() throws Exception {
         Optional<VirtualUriMapping.Result> mappingResult = _uriMapping.mapUri(new URI("/home"));
-        assertThat(mappingResult, is(Optional.empty()));
+        assertTrue(mappingResult.isEmpty());
     }
 
     @Test
     public void testVanityUrlWithTarget() throws Exception {
         Optional<VirtualUriMapping.Result> mappingResult = _uriMapping.mapUri(new URI("/xmas"));
-        assertThat(mappingResult, notNullValue());
-        assertThat(mappingResult.isPresent() ? mappingResult.get().getToUri() : "", equalTo("redirect:/internal/page.html"));
+        assertNotNull(mappingResult);
+        assertTrue(mappingResult.isPresent());
+        assertEquals("redirect:/internal/page.html", mappingResult.get().getToUri());
     }
 
-    @Before
+    @BeforeEach
+    @Component(type = SystemContext.class, implementation = Component.Mock.class)
     public void setUp() {
         _uriMapping = new VirtualVanityUriMapping();
 
-        Provider moduleProvider = mock(Provider.class);
+        Provider<VanityUrlModule> moduleProvider = mock(Provider.class);
         VanityUrlModule module = new VanityUrlModule();
         Map<String, String> excludes = new HashMap<>();
         excludes.put("pages", ".*\\..*");
@@ -92,7 +96,7 @@ public class VirtualVanityUriMappingTest {
         when(moduleProvider.get()).thenReturn(module);
         _uriMapping.setVanityUrlModule(moduleProvider);
 
-        Provider serviceProvider = mock(Provider.class);
+        Provider<VanityUrlService> serviceProvider = mock(Provider.class);
         VanityUrlService vanityUrlService = mock(VanityUrlService.class);
         when(vanityUrlService.queryForVanityUrlNode("/home", NullSite.SITE_NAME)).thenReturn(null);
 
@@ -104,12 +108,6 @@ public class VirtualVanityUriMappingTest {
         _uriMapping.setVanityUrlService(serviceProvider);
 
         initWebContext();
-        initComponentProvider();
-    }
-
-    private void initComponentProvider() {
-        SystemContext systemContext = mock(SystemContext.class);
-        ComponentsTestUtil.setInstance(SystemContext.class, systemContext);
     }
 
     private void initWebContext() {
@@ -119,7 +117,7 @@ public class VirtualVanityUriMappingTest {
         MgnlContext.setInstance(webContext);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         MgnlContext.setInstance(null);
     }

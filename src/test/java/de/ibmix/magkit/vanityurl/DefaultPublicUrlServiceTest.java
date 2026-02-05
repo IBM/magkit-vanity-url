@@ -22,13 +22,12 @@ package de.ibmix.magkit.vanityurl;
 
 import info.magnolia.cms.beans.config.ServerConfiguration;
 import info.magnolia.test.mock.jcr.MockNode;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static de.ibmix.magkit.vanityurl.VanityUrlService.PN_LINK;
 import static de.ibmix.magkit.vanityurl.VanityUrlService.PN_VANITY_URL;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -47,8 +46,8 @@ public class DefaultPublicUrlServiceTest {
         mockNode.setProperty(PN_VANITY_URL, "/ibmix");
         mockNode.setProperty(PN_LINK, "http://www.ibmix.de");
 
-        assertThat(_service.createTargetUrl(mockNode), equalTo("http://www.ibmix.de"));
-        assertThat(_service.createVanityUrl(mockNode), equalTo("http://www.ibmix.de/ibmix"));
+        assertEquals("http://www.ibmix.de", _service.createTargetUrl(mockNode));
+        assertEquals("http://www.ibmix.de/ibmix", _service.createVanityUrl(mockNode));
     }
 
     @Test
@@ -57,8 +56,8 @@ public class DefaultPublicUrlServiceTest {
         mockNode.setProperty(PN_VANITY_URL, "/ibmix");
         mockNode.setProperty(PN_LINK, "123-456-789");
 
-        assertThat(_service.createTargetUrl(mockNode), equalTo("http://www.ibmix.de/context/page.html"));
-        assertThat(_service.createVanityUrl(mockNode), equalTo("http://www.ibmix.de/ibmix"));
+        assertEquals("http://www.ibmix.de/context/page.html", _service.createTargetUrl(mockNode));
+        assertEquals("http://www.ibmix.de/ibmix", _service.createVanityUrl(mockNode));
     }
 
     @Test
@@ -68,8 +67,8 @@ public class DefaultPublicUrlServiceTest {
         mockNode.setProperty(PN_LINK, "http://www.ibmix.de");
         _service.setTargetContextPath("/public");
 
-        assertThat(_service.createTargetUrl(mockNode), equalTo("http://www.ibmix.de"));
-        assertThat(_service.createVanityUrl(mockNode), equalTo("http://www.ibmix.de/public/ibmix"));
+        assertEquals("http://www.ibmix.de", _service.createTargetUrl(mockNode));
+        assertEquals("http://www.ibmix.de/public/ibmix", _service.createVanityUrl(mockNode));
     }
 
     @Test
@@ -79,11 +78,11 @@ public class DefaultPublicUrlServiceTest {
         mockNode.setProperty(PN_LINK, "123-456-789");
         _service.setTargetContextPath("/public");
 
-        assertThat(_service.createTargetUrl(mockNode), equalTo("http://www.ibmix.de/context/page.html"));
-        assertThat(_service.createVanityUrl(mockNode), equalTo("http://www.ibmix.de/public/ibmix"));
+        assertEquals("http://www.ibmix.de/context/page.html", _service.createTargetUrl(mockNode));
+        assertEquals("http://www.ibmix.de/public/ibmix", _service.createVanityUrl(mockNode));
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         _service = new DefaultPublicUrlService() {
             @Override

@@ -25,13 +25,14 @@ import info.magnolia.jcr.util.NodeUtil;
 import info.magnolia.jcr.util.PropertyUtil;
 import info.magnolia.link.LinkUtil;
 import info.magnolia.module.site.NullSite;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Provider;
+import org.apache.commons.lang3.Strings;
 import org.apache.jackrabbit.value.StringValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Provider;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
@@ -56,11 +57,7 @@ import static javax.jcr.query.Query.JCR_SQL2;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
 import static org.apache.commons.lang3.StringUtils.defaultString;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-import static org.apache.commons.lang3.StringUtils.removeStart;
-import static org.apache.commons.lang3.StringUtils.replace;
-import static org.apache.commons.lang3.StringUtils.startsWithIgnoreCase;
 import static org.apache.commons.lang3.StringUtils.substringAfter;
 
 /**
@@ -84,7 +81,7 @@ public class VanityUrlService {
 
     @Inject
     @Named(value = "magnolia.contextpath")
-    private String _contextPath = "";
+    private String _contextPath;
 
     private Provider<VanityUrlModule> _vanityUrlModule;
 
@@ -199,9 +196,7 @@ public class VanityUrlService {
                 url = LinkUtil.createExternalLink(pageNode);
             } else {
                 url = getLinkFromNode(pageNode, isForward);
-                if (isNotBlank(url) && url.contains(_contextPath)) {
-                    url = substringAfter(url, _contextPath);
-                }
+                url = substringAfter(url, defaultString(_contextPath));
             }
         }
         return url;
@@ -219,9 +214,9 @@ public class VanityUrlService {
             if (node != null && node.hasNode(NN_IMAGE)) {
                 final Node binaryNode = node.getNode(NN_IMAGE);
                 link = getLinkFromNode(binaryNode, false);
-                link = removeStart(defaultString(link), _contextPath);
+                link = Strings.CS.removeStart(defaultString(link), _contextPath);
                 final String mimeType = defaultIfEmpty(PropertyUtil.getString(binaryNode, PROPERTY_CONTENTTYPE), PreviewImageConfig.ImageType.SVG.getMimeType());
-                link = replace(link, "." + DEFAULT_EXTENSION, ImageType.getExtensionByMimeType(mimeType));
+                link = Strings.CS.replace(link, "." + DEFAULT_EXTENSION, ImageType.getExtensionByMimeType(mimeType));
             }
         } catch (RepositoryException e) {
             LOGGER.error("Error creating link to image property.", e);
@@ -305,7 +300,7 @@ public class VanityUrlService {
     }
 
     static boolean isExternalLink(String linkValue) {
-        return startsWithIgnoreCase(linkValue, "https://") || startsWithIgnoreCase(linkValue, "http://");
+        return Strings.CI.startsWith(linkValue, "https://") || Strings.CI.startsWith(linkValue, "http://");
     }
 
     public static ImageType getImageType(VanityUrlModule vanityUrlModule) {
