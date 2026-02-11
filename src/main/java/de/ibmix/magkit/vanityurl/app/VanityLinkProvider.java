@@ -25,7 +25,7 @@ import de.ibmix.magkit.vanityurl.VanityUrlService;
 import com.machinezoo.noexception.Exceptions;
 import com.vaadin.data.ValueProvider;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import javax.jcr.Item;
 import javax.jcr.Node;
 

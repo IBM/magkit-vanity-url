@@ -2,12 +2,14 @@
 name: vanityUrls
 icon: icon-share
 label: vanityUrls.app.label
-datasource:
-  preview:
-    nodeName: qrCode
 subApps:
   browser:
     label: vanityUrls.app.label
+    datasource:
+      $type: jcrDatasource
+      workspace: vanityUrls
+      preview:
+        nodeName: qrCode
     actionbar:
       sections:
         item:
@@ -115,20 +117,19 @@ subApps:
           defaultValue: 301
           datasource:
             $type: optionListDatasource
-            options:
-              - name: 301
-                value: 301
-              - name: 302
-                value: 302
-              - name: forward
-                value: forward
+            options: !override
+              redirect301:
+                value: "301"
+              redirect302:
+                value: "302"
+              forward:
+                value: "forward"
         description:
           $type: textField
           rows: 3
     actions:
       commit:
-        $type: commitAction
-        implementationClass: de.ibmix.magkit.vanityurl.app.VanityUrlSaveFormAction
+        $type: vanityUrlSaveFormAction
       cancel:
         $type: closeAction
   preview:

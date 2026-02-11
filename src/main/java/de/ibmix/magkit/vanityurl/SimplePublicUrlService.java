@@ -20,11 +20,12 @@ package de.ibmix.magkit.vanityurl;
  * #L%
  */
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import org.apache.commons.lang3.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.inject.Named;
 import javax.jcr.Node;
 
 import static de.ibmix.magkit.vanityurl.VanityUrlService.PN_LINK;
@@ -35,8 +36,6 @@ import static info.magnolia.jcr.util.NodeUtil.getPathIfPossible;
 import static info.magnolia.jcr.util.PropertyUtil.getString;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-import static org.apache.commons.lang3.StringUtils.removeEnd;
-import static org.apache.commons.lang3.StringUtils.replaceOnce;
 
 /**
  * Alternative simple implementation for the {@link PublicUrlService}.
@@ -50,7 +49,7 @@ public class SimplePublicUrlService implements PublicUrlService {
 
     @Inject
     @Named(value = "magnolia.contextpath")
-    private String _contextPath = EMPTY;
+    private String _contextPath;
 
     private String _targetServerPrefix = "https://www.demo-project.com/context";
 
@@ -85,13 +84,13 @@ public class SimplePublicUrlService implements PublicUrlService {
     private String removeContextPath(String link) {
         String changedLink = link;
         if (isNotEmpty(_contextPath)) {
-            changedLink = replaceOnce(changedLink, _contextPath, EMPTY);
+            changedLink = Strings.CS.replaceOnce(changedLink, _contextPath, EMPTY);
         }
         return changedLink;
     }
 
     private String normalizePrefix() {
-        return removeEnd(_targetServerPrefix, "/");
+        return Strings.CS.removeEnd(_targetServerPrefix, "/");
     }
 
     public void setTargetServerPrefix(final String targetServerPrefix) {

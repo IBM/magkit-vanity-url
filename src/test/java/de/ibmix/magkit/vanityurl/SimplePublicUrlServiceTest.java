@@ -21,11 +21,10 @@ package de.ibmix.magkit.vanityurl;
  */
 
 import info.magnolia.test.mock.jcr.MockNode;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test for simple public url service ({@link SimplePublicUrlService}).
@@ -33,53 +32,53 @@ import static org.hamcrest.core.IsEqual.equalTo;
  * @author frank.sommer
  * @since 16.10.14
  */
-public class SimplePublicUrlServiceTest {
+class SimplePublicUrlServiceTest {
     private SimplePublicUrlService _service;
 
     @Test
-    public void testExternalTarget() throws Exception {
+    void testExternalTarget() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty(VanityUrlService.PN_VANITY_URL, "/ibmix");
         mockNode.setProperty(VanityUrlService.PN_LINK, "https://www.ibmix.de");
 
-        assertThat(_service.createTargetUrl(mockNode), equalTo("https://www.ibmix.de"));
-        assertThat(_service.createVanityUrl(mockNode), equalTo("https://www.demo-project.com/context/ibmix"));
+        assertEquals("https://www.ibmix.de", _service.createTargetUrl(mockNode));
+        assertEquals("https://www.demo-project.com/context/ibmix", _service.createVanityUrl(mockNode));
     }
 
     @Test
-    public void testInternalTarget() throws Exception {
+    void testInternalTarget() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty(VanityUrlService.PN_VANITY_URL, "/ibmix");
         mockNode.setProperty(VanityUrlService.PN_LINK, "123-456-789");
 
-        assertThat(_service.createTargetUrl(mockNode), equalTo("https://www.demo-project.com/context/internal/page.html"));
-        assertThat(_service.createVanityUrl(mockNode), equalTo("https://www.demo-project.com/context/ibmix"));
+        assertEquals("https://www.demo-project.com/context/internal/page.html", _service.createTargetUrl(mockNode));
+        assertEquals("https://www.demo-project.com/context/ibmix", _service.createVanityUrl(mockNode));
     }
 
     @Test
-    public void testInternalTargetWithConfiguredPrefix() throws Exception {
+    void testInternalTargetWithConfiguredPrefix() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty(VanityUrlService.PN_VANITY_URL, "/ibmix");
         mockNode.setProperty(VanityUrlService.PN_LINK, "123-456-789");
         _service.setTargetServerPrefix("https://www.ibmix.de");
 
-        assertThat(_service.createTargetUrl(mockNode), equalTo("https://www.ibmix.de/internal/page.html"));
-        assertThat(_service.createVanityUrl(mockNode), equalTo("https://www.ibmix.de/ibmix"));
+        assertEquals("https://www.ibmix.de/internal/page.html", _service.createTargetUrl(mockNode));
+        assertEquals("https://www.ibmix.de/ibmix", _service.createVanityUrl(mockNode));
     }
 
     @Test
-    public void testInternalTargetWithSlashEndingConfiguredPrefix() throws Exception {
+    void testInternalTargetWithSlashEndingConfiguredPrefix() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty(VanityUrlService.PN_VANITY_URL, "/ibmix");
         mockNode.setProperty(VanityUrlService.PN_LINK, "123-456-789");
         _service.setTargetServerPrefix("https://www.ibmix.de/");
 
-        assertThat(_service.createTargetUrl(mockNode), equalTo("https://www.ibmix.de/internal/page.html"));
-        assertThat(_service.createVanityUrl(mockNode), equalTo("https://www.ibmix.de/ibmix"));
+        assertEquals("https://www.ibmix.de/internal/page.html", _service.createTargetUrl(mockNode));
+        assertEquals("https://www.ibmix.de/ibmix", _service.createVanityUrl(mockNode));
     }
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         _service = new SimplePublicUrlService() {
             @Override
             public String getExternalLinkFromId(final String nodeId) {

@@ -1,23 +1,22 @@
 package de.ibmix.magkit.vanityurl;
 
-import info.magnolia.cms.i18n.DefaultI18nContentSupport;
 import info.magnolia.cms.i18n.I18nContentSupport;
 import info.magnolia.context.MgnlContext;
 import info.magnolia.repository.RepositoryConstants;
-import info.magnolia.test.ComponentsTestUtil;
+import info.magnolia.test.junit5.Component;
+import info.magnolia.test.junit5.MagnoliaTest;
 import info.magnolia.test.mock.MockWebContext;
 import info.magnolia.test.mock.jcr.MockNode;
 import info.magnolia.test.mock.jcr.MockProperty;
 import info.magnolia.test.mock.jcr.MockSession;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
 import static info.magnolia.cms.beans.runtime.File.PROPERTY_CONTENTTYPE;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -48,7 +47,8 @@ import static org.mockito.Mockito.when;
  * @author frank.sommer
  * @since 28.05.14
  */
-public class VanityUrlServiceTest {
+@MagnoliaTest
+class VanityUrlServiceTest {
 
     private static final String TEST_UUID = "123-4556-123";
     private static final String TEST_UUID_FORWARD = "123-4556-124";
@@ -56,105 +56,105 @@ public class VanityUrlServiceTest {
     private VanityUrlService _service;
 
     @Test
-    public void testRedirectWithNull() {
-        assertThat(_service.createRedirectUrl(null, null), equalTo(""));
+    void testRedirectWithNull() {
+        assertEquals("", _service.createRedirectUrl(null, null));
     }
 
     @Test
-    public void testTargetUrlWithEmptyNode() {
+    void testTargetUrlWithEmptyNode() {
         MockNode mockNode = new MockNode("node");
-        assertThat(_service.createRedirectUrl(mockNode, null), equalTo(""));
-        assertThat(_service.createPreviewUrl(mockNode), equalTo(""));
+        assertEquals("", _service.createRedirectUrl(mockNode, null));
+        assertEquals("", _service.createPreviewUrl(mockNode));
     }
 
     @Test
-    public void testTargetUrlInternalWithAnchor() throws Exception {
+    void testTargetUrlInternalWithAnchor() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty("link", TEST_UUID);
         mockNode.setProperty("linkSuffix", "#anchor1");
 
-        assertThat(_service.createRedirectUrl(mockNode, null), equalTo("redirect:/internal/page.html#anchor1"));
-        assertThat(_service.createPreviewUrl(mockNode), equalTo("/internal/page.html#anchor1"));
+        assertEquals("redirect:/internal/page.html#anchor1", _service.createRedirectUrl(mockNode, null));
+        assertEquals("/internal/page.html#anchor1", _service.createPreviewUrl(mockNode));
     }
 
     @Test
-    public void testTargetUrlExternal() throws Exception {
+    void testTargetUrlExternal() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty("link", "http://www.ibmix.de");
 
-        assertThat(_service.createRedirectUrl(mockNode, null), equalTo("redirect:http://www.ibmix.de"));
-        assertThat(_service.createPreviewUrl(mockNode), equalTo("http://www.ibmix.de"));
+        assertEquals("redirect:http://www.ibmix.de", _service.createRedirectUrl(mockNode, null));
+        assertEquals("http://www.ibmix.de", _service.createPreviewUrl(mockNode));
     }
 
     @Test
-    public void testForward() throws Exception {
+    void testForward() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty("link", TEST_UUID_FORWARD);
         mockNode.setProperty("type", "forward");
-        assertThat(_service.createRedirectUrl(mockNode, null), equalTo("forward:/internal/forward/page.html"));
+        assertEquals("forward:/internal/forward/page.html", _service.createRedirectUrl(mockNode, null));
     }
 
     @Test
-    public void testRedirectWithAnchor() throws Exception {
+    void testRedirectWithAnchor() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty("link", TEST_UUID_FORWARD);
         mockNode.setProperty("type", "301");
         mockNode.setProperty("linkSuffix", "#anchor1");
-        assertThat(_service.createRedirectUrl(mockNode, null), equalTo("permanent:/internal/forward/page.html#anchor1"));
+        assertEquals("permanent:/internal/forward/page.html#anchor1", _service.createRedirectUrl(mockNode, null));
     }
 
     @Test
-    public void testRedirectWithOriginSuffix() throws Exception {
+    void testRedirectWithOriginSuffix() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty("link", TEST_UUID_FORWARD);
         mockNode.setProperty("type", "301");
-        assertThat(_service.createRedirectUrl(mockNode, "?test=1"), equalTo("permanent:/internal/forward/page.html?test=1"));
+        assertEquals("permanent:/internal/forward/page.html?test=1", _service.createRedirectUrl(mockNode, "?test=1"));
     }
 
     @Test
-    public void testForwardWithInvalidUrl() throws Exception {
+    void testForwardWithInvalidUrl() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty("link", "http://www.ibmix.de");
         mockNode.setProperty("type", "forward");
-        assertThat(_service.createRedirectUrl(mockNode, null), equalTo(""));
+        assertEquals("", _service.createRedirectUrl(mockNode, null));
     }
 
     @Test
-    public void testPublicUrl() {
-        assertThat(_service.createPublicUrl(null), equalTo("http://www.ibmix.de/page.html"));
+    void testPublicUrl() {
+        assertEquals("http://www.ibmix.de/page.html", _service.createPublicUrl(null));
     }
 
     @Test
-    public void testVanityUrl() {
-        assertThat(_service.createVanityUrl(null), equalTo("http://www.ibmix.de/vanity"));
+    void testVanityUrl() {
+        assertEquals("http://www.ibmix.de/vanity", _service.createVanityUrl(null));
     }
 
     @Test
-    public void testImageLinkWithNull() {
-        assertThat(_service.createImageLink(null), equalTo(""));
+    void testImageLinkWithNull() {
+        assertEquals("", _service.createImageLink(null));
     }
 
     @Test
-    public void testImageLinkWithMissingImage() {
+    void testImageLinkWithMissingImage() {
         MockNode mockNode = new MockNode("node");
-        assertThat(_service.createImageLink(mockNode), equalTo(""));
+        assertEquals("", _service.createImageLink(mockNode));
     }
 
     @Test
-    public void testImageLinkWithPngImage() {
+    void testImageLinkWithPngImage() {
         MockNode mockNode = new MockNode("node");
         MockNode image = new MockNode(VanityUrlService.NN_IMAGE);
         image.addProperty(new MockProperty(PROPERTY_CONTENTTYPE, PreviewImageConfig.ImageType.PNG.getMimeType(), image));
         mockNode.addNode(image);
-        assertThat(_service.createImageLink(mockNode), equalTo("/node/qrCode.png"));
+        assertEquals("/node/qrCode.png", _service.createImageLink(mockNode));
     }
 
     @Test
-    public void testImageLinkWithSvgImage() {
+    void testImageLinkWithSvgImage() {
         MockNode mockNode = new MockNode("node");
         MockNode image = new MockNode(VanityUrlService.NN_IMAGE);
         mockNode.addNode(image);
-        assertThat(_service.createImageLink(mockNode), equalTo("/node/qrCode.svg"));
+        assertEquals("/node/qrCode.svg", _service.createImageLink(mockNode));
     }
 
     private MockNode createNode(MockSession session, String path) throws Exception {
@@ -173,9 +173,9 @@ public class VanityUrlServiceTest {
         return current;
     }
 
-    @Before
-    public void setUp() throws Exception {
-        ComponentsTestUtil.setInstance(I18nContentSupport.class, new DefaultI18nContentSupport());
+    @BeforeEach
+    @Component(type = I18nContentSupport.class, implementation = Component.Mock.class)
+    void setUp() throws Exception {
         MockWebContext webContext = new MockWebContext();
         MockSession session = new MockSession(RepositoryConstants.WEBSITE);
         createNode(session, "/internal/forward/page").setIdentifier(TEST_UUID_FORWARD);

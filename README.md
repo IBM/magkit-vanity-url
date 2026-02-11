@@ -8,7 +8,7 @@
 
 A [module](https://documentation.magnolia-cms.com/display/DOCS/Modules) containing an [app](https://documentation.magnolia-cms.com/display/DOCS/Apps) for the [Magnolia CMS](http://www.magnolia-cms.com)
 
-Allows to configure vanity URLs in the Magnolia CMS without requiring access to the config workspace. Ideal for page/content editors who are not supposed to write to the config workspace. Also creates QR codes for quick testing with your mobile phone.
+Allows configuring vanity URLs in the Magnolia CMS without requiring access to the config workspace. Ideal for page/content editors who are not supposed to write to the config workspace. Also creates QR codes for quick testing with your mobile phone.
 
 ### Maven artifacts in Magnolia's Nexus
 
@@ -21,12 +21,13 @@ You can browse available artifacts through [Magnolia's Nexus](https://nexus.magn
     <dependency>
         <artifactId>magkit-vanity-url</artifactId>
         <groupId>de.ibmix.magkit</groupId>
-        <version>1.7.0</version>
+        <version>1.8.0</version>
     </dependency>
 ```
 
 #### Versions
 
+* Version 1.8.x is compatible with Magnolia 6.4.x
 * Version 1.7.x is compatible with Magnolia 6.3.x (new UI support again)
 * Version 1.6.x is compatible with Magnolia 6.2.x (new UI support)
 
@@ -42,18 +43,18 @@ See also the [change log](CHANGELOG.md) and [security advices](SECURITY.md)
 ### Magnolia Module Configuration
 
 You can configure the following settings in the module configuration by JCR or yaml:
-* _excludes_ : Pattern of urls, which are no candidates for vanity urls.
-  * by default an exclude for all urls containing a dot is configured, that prevents the virtual uri mapping checks every ordinary request like script.js or page.html 
-* _publicUrlService_ : Implementation of _de.ibmix.magkit.vanityurl.PublicUrlService_. Two implementations are already available.
-  * _de.ibmix.magkit.vanityurl.DefaultPublicUrlService_ (default) : Use of default base url and site configuration with context path replacement.
-  * _de.ibmix.magkit.vanityurl.SimplePublicUrlService_ : Uses configured public prefix and removes the author context path.
-* _headlessEndpoint_ : is used for headless support and defines the pages rest endpoint which should be checked for vanity urls
-* _previewImage_ : image type of preview image. SVG and PNG is possible (default is SVG).
+* _excludes_: Pattern of urls, which are no candidates for vanity urls.
+  * by default, an exclude for all urls containing a dot is configured that prevents the virtual uri mapping checks every ordinary request like script.js or page.html 
+* _publicUrlService_: Implementation of _de.ibmix.magkit.vanityurl.PublicUrlService_. Two implementations are already available.
+  * _de.ibmix.magkit.vanityurl.DefaultPublicUrlService_ (default): Use of default base url and site configuration with context path replacement.
+  * _de.ibmix.magkit.vanityurl.SimplePublicUrlService_: Uses configured public prefix and removes the author context path.
+* _headlessEndpoint_: is used for headless support and defines the pages rest endpoint which should be checked for vanity urls
+* _previewImage_: image type of preview image. SVG and PNG is possible (default is SVG).
 
 #### Headless support (with version 1.6.1)
 
 For using the headless support you have to decorate the default vanity url virtual uri mapping. It is also possible to define an additional virtual uri mapping 
-if you want to support both renderings. All you need is the following yaml which you can place in your module as decoration of the vanity url module 
+if you want to support both renderings. All you need is the following YAML which you can place in your module as decoration of the vanity url module 
 (your-module/decorations/magkit-vanity-url/virtualUriMappings) or as own virtual uri mapping (your-module/virtualUriMappings).
 ```yaml
 class: de.ibmix.magkit.vanityurl.HeadlessVirtualVanityUriMapping

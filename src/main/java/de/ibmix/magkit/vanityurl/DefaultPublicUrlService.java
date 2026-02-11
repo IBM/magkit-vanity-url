@@ -24,11 +24,12 @@ import info.magnolia.cms.beans.config.ServerConfiguration;
 import info.magnolia.module.site.Domain;
 import info.magnolia.module.site.Site;
 import info.magnolia.module.site.SiteManager;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import org.apache.commons.lang3.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.inject.Named;
 import javax.jcr.Node;
 import java.util.Collection;
 
@@ -42,8 +43,6 @@ import static info.magnolia.jcr.util.NodeUtil.getPathIfPossible;
 import static info.magnolia.jcr.util.PropertyUtil.getString;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-import static org.apache.commons.lang3.StringUtils.removeEnd;
-import static org.apache.commons.lang3.StringUtils.replaceOnce;
 
 /**
  * Default implementation for the {@link PublicUrlService}.
@@ -58,7 +57,7 @@ public class DefaultPublicUrlService implements PublicUrlService {
 
     @Inject
     @Named(value = "magnolia.contextpath")
-    private String _contextPath = EMPTY;
+    private String _contextPath;
 
     private SiteManager _siteManager;
     private ServerConfiguration _serverConfiguration;
@@ -81,7 +80,7 @@ public class DefaultPublicUrlService implements PublicUrlService {
             }
         }
 
-        return removeEnd(baseUrl, "/") + getString(node, PN_VANITY_URL, EMPTY);
+        return Strings.CS.removeEnd(baseUrl, "/") + getString(node, PN_VANITY_URL, EMPTY);
     }
 
     /**
@@ -93,7 +92,7 @@ public class DefaultPublicUrlService implements PublicUrlService {
     private String replaceContextPath(String link) {
         String changedLink = link;
         if (isNotEmpty(_contextPath)) {
-            changedLink = replaceOnce(changedLink, _contextPath, _targetContextPath);
+            changedLink = Strings.CS.replaceOnce(changedLink, _contextPath, _targetContextPath);
         }
         return changedLink;
     }
