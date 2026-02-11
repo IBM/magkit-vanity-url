@@ -53,30 +53,30 @@ import static org.mockito.Mockito.when;
  * @since 28.05.14
  */
 @MagnoliaTest
-public class VirtualVanityUriMappingTest {
+class VirtualVanityUriMappingTest {
 
     private VirtualVanityUriMapping _uriMapping;
 
     @Test
-    public void testRootRequest() throws Exception {
+    void testRootRequest() throws Exception {
         Optional<VirtualUriMapping.Result> mappingResult = _uriMapping.mapUri(new URI("/"));
         assertTrue(mappingResult.isEmpty());
     }
 
     @Test
-    public void testPageRequest() throws Exception {
+    void testPageRequest() throws Exception {
         Optional<VirtualUriMapping.Result> mappingResult = _uriMapping.mapUri(new URI("/home.html"));
         assertFalse(mappingResult.isPresent());
     }
 
     @Test
-    public void testVanityUrlWithoutTarget() throws Exception {
+    void testVanityUrlWithoutTarget() throws Exception {
         Optional<VirtualUriMapping.Result> mappingResult = _uriMapping.mapUri(new URI("/home"));
         assertTrue(mappingResult.isEmpty());
     }
 
     @Test
-    public void testVanityUrlWithTarget() throws Exception {
+    void testVanityUrlWithTarget() throws Exception {
         Optional<VirtualUriMapping.Result> mappingResult = _uriMapping.mapUri(new URI("/xmas"));
         assertNotNull(mappingResult);
         assertTrue(mappingResult.isPresent());
@@ -85,7 +85,7 @@ public class VirtualVanityUriMappingTest {
 
     @BeforeEach
     @Component(type = SystemContext.class, implementation = Component.Mock.class)
-    public void setUp() {
+    void setUp() {
         _uriMapping = new VirtualVanityUriMapping();
 
         Provider<VanityUrlModule> moduleProvider = mock(Provider.class);
@@ -118,7 +118,7 @@ public class VirtualVanityUriMappingTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         MgnlContext.setInstance(null);
     }
 }

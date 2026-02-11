@@ -96,23 +96,23 @@ public class VanityUrlSaveFormAction extends SaveDetailSubAppAction<Node> {
     private final LocationController _locationController;
     private final ItemResolver<Node> _itemResolver;
     private final Provider<VanityUrlModule> _vanityUrlModule;
-    private SimpleTranslator _simpleTranslator;
-    private VanityUrlService _vanityUrlService;
-    private NodeNameHelper _nodeNameHelper;
-    private FileSystemHelper _fileSystemHelper;
+    private final SimpleTranslator _simpleTranslator;
+    private final VanityUrlService _vanityUrlService;
+    private final NodeNameHelper _nodeNameHelper;
+    private final FileSystemHelper _fileSystemHelper;
 
     //CHECKSTYLE:OFF
     @Inject
-    public VanityUrlSaveFormAction(SaveDetailSubAppActionDefinition definition, CloseHandler closeHandler, ValueContext<Node> valueContext, EditorView<Node> form, Datasource<Node> datasource, DatasourceObservation.Manual datasourceObservation, LocationController locationController, AppContext appContext, ItemResolver<Node> itemResolver, AppContext _appContext, LocationController _locationController, ItemResolver<Node> _itemResolver, Provider<VanityUrlModule> _vanityUrlModule, SimpleTranslator _simpleTranslator, VanityUrlService _vanityUrlService, NodeNameHelper _nodeNameHelper, FileSystemHelper _fileSystemHelper) {
+    public VanityUrlSaveFormAction(SaveDetailSubAppActionDefinition definition, CloseHandler closeHandler, ValueContext<Node> valueContext, EditorView<Node> form, Datasource<Node> datasource, DatasourceObservation.Manual datasourceObservation, LocationController locationController, AppContext appContext, ItemResolver<Node> itemResolver, Provider<VanityUrlModule> vanityUrlModule, SimpleTranslator simpleTranslator, VanityUrlService vanityUrlService, NodeNameHelper nodeNameHelper, FileSystemHelper fileSystemHelper) {
         super(definition, closeHandler, valueContext, form, datasource, datasourceObservation, locationController, appContext, itemResolver);
-        this._appContext = _appContext;
-        this._locationController = _locationController;
-        this._itemResolver = _itemResolver;
-        this._vanityUrlModule = _vanityUrlModule;
-        this._simpleTranslator = _simpleTranslator;
-        this._vanityUrlService = _vanityUrlService;
-        this._nodeNameHelper = _nodeNameHelper;
-        this._fileSystemHelper = _fileSystemHelper;
+        _appContext = appContext;
+        _locationController = locationController;
+        _itemResolver = itemResolver;
+        _vanityUrlModule = vanityUrlModule;
+        _simpleTranslator = simpleTranslator;
+        _vanityUrlService = vanityUrlService;
+        _nodeNameHelper = nodeNameHelper;
+        _fileSystemHelper = fileSystemHelper;
     }
     //CHECKSTYLE:ON
 
@@ -242,25 +242,4 @@ public class VanityUrlSaveFormAction extends SaveDetailSubAppAction<Node> {
             }
         }
     }
-
-    @Inject
-    public void setVanityUrlService(final VanityUrlService vanityUrlService) {
-        _vanityUrlService = vanityUrlService;
-    }
-
-    @Inject
-    public void setSimpleTranslator(final SimpleTranslator simpleTranslator) {
-        _simpleTranslator = simpleTranslator;
-    }
-
-    @Inject
-    public void setNodeNameHelper(final NodeNameHelper nodeNameHelper) {
-        _nodeNameHelper = nodeNameHelper;
-    }
-
-    @Inject
-    public void setFileSystemHelper(FileSystemHelper fileSystemHelper) {
-        _fileSystemHelper = fileSystemHelper;
-    }
-
 }

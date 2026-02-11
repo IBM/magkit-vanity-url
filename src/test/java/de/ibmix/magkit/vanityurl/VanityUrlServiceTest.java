@@ -48,7 +48,7 @@ import static org.mockito.Mockito.when;
  * @since 28.05.14
  */
 @MagnoliaTest
-public class VanityUrlServiceTest {
+class VanityUrlServiceTest {
 
     private static final String TEST_UUID = "123-4556-123";
     private static final String TEST_UUID_FORWARD = "123-4556-124";
@@ -56,19 +56,19 @@ public class VanityUrlServiceTest {
     private VanityUrlService _service;
 
     @Test
-    public void testRedirectWithNull() {
+    void testRedirectWithNull() {
         assertEquals("", _service.createRedirectUrl(null, null));
     }
 
     @Test
-    public void testTargetUrlWithEmptyNode() {
+    void testTargetUrlWithEmptyNode() {
         MockNode mockNode = new MockNode("node");
         assertEquals("", _service.createRedirectUrl(mockNode, null));
         assertEquals("", _service.createPreviewUrl(mockNode));
     }
 
     @Test
-    public void testTargetUrlInternalWithAnchor() throws Exception {
+    void testTargetUrlInternalWithAnchor() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty("link", TEST_UUID);
         mockNode.setProperty("linkSuffix", "#anchor1");
@@ -78,7 +78,7 @@ public class VanityUrlServiceTest {
     }
 
     @Test
-    public void testTargetUrlExternal() throws Exception {
+    void testTargetUrlExternal() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty("link", "http://www.ibmix.de");
 
@@ -87,7 +87,7 @@ public class VanityUrlServiceTest {
     }
 
     @Test
-    public void testForward() throws Exception {
+    void testForward() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty("link", TEST_UUID_FORWARD);
         mockNode.setProperty("type", "forward");
@@ -95,7 +95,7 @@ public class VanityUrlServiceTest {
     }
 
     @Test
-    public void testRedirectWithAnchor() throws Exception {
+    void testRedirectWithAnchor() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty("link", TEST_UUID_FORWARD);
         mockNode.setProperty("type", "301");
@@ -104,7 +104,7 @@ public class VanityUrlServiceTest {
     }
 
     @Test
-    public void testRedirectWithOriginSuffix() throws Exception {
+    void testRedirectWithOriginSuffix() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty("link", TEST_UUID_FORWARD);
         mockNode.setProperty("type", "301");
@@ -112,7 +112,7 @@ public class VanityUrlServiceTest {
     }
 
     @Test
-    public void testForwardWithInvalidUrl() throws Exception {
+    void testForwardWithInvalidUrl() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty("link", "http://www.ibmix.de");
         mockNode.setProperty("type", "forward");
@@ -120,28 +120,28 @@ public class VanityUrlServiceTest {
     }
 
     @Test
-    public void testPublicUrl() {
+    void testPublicUrl() {
         assertEquals("http://www.ibmix.de/page.html", _service.createPublicUrl(null));
     }
 
     @Test
-    public void testVanityUrl() {
+    void testVanityUrl() {
         assertEquals("http://www.ibmix.de/vanity", _service.createVanityUrl(null));
     }
 
     @Test
-    public void testImageLinkWithNull() {
+    void testImageLinkWithNull() {
         assertEquals("", _service.createImageLink(null));
     }
 
     @Test
-    public void testImageLinkWithMissingImage() {
+    void testImageLinkWithMissingImage() {
         MockNode mockNode = new MockNode("node");
         assertEquals("", _service.createImageLink(mockNode));
     }
 
     @Test
-    public void testImageLinkWithPngImage() {
+    void testImageLinkWithPngImage() {
         MockNode mockNode = new MockNode("node");
         MockNode image = new MockNode(VanityUrlService.NN_IMAGE);
         image.addProperty(new MockProperty(PROPERTY_CONTENTTYPE, PreviewImageConfig.ImageType.PNG.getMimeType(), image));
@@ -150,7 +150,7 @@ public class VanityUrlServiceTest {
     }
 
     @Test
-    public void testImageLinkWithSvgImage() {
+    void testImageLinkWithSvgImage() {
         MockNode mockNode = new MockNode("node");
         MockNode image = new MockNode(VanityUrlService.NN_IMAGE);
         mockNode.addNode(image);
@@ -175,7 +175,7 @@ public class VanityUrlServiceTest {
 
     @BeforeEach
     @Component(type = I18nContentSupport.class, implementation = Component.Mock.class)
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         MockWebContext webContext = new MockWebContext();
         MockSession session = new MockSession(RepositoryConstants.WEBSITE);
         createNode(session, "/internal/forward/page").setIdentifier(TEST_UUID_FORWARD);

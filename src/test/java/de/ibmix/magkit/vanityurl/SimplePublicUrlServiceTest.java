@@ -32,11 +32,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author frank.sommer
  * @since 16.10.14
  */
-public class SimplePublicUrlServiceTest {
+class SimplePublicUrlServiceTest {
     private SimplePublicUrlService _service;
 
     @Test
-    public void testExternalTarget() throws Exception {
+    void testExternalTarget() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty(VanityUrlService.PN_VANITY_URL, "/ibmix");
         mockNode.setProperty(VanityUrlService.PN_LINK, "https://www.ibmix.de");
@@ -46,7 +46,7 @@ public class SimplePublicUrlServiceTest {
     }
 
     @Test
-    public void testInternalTarget() throws Exception {
+    void testInternalTarget() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty(VanityUrlService.PN_VANITY_URL, "/ibmix");
         mockNode.setProperty(VanityUrlService.PN_LINK, "123-456-789");
@@ -56,7 +56,7 @@ public class SimplePublicUrlServiceTest {
     }
 
     @Test
-    public void testInternalTargetWithConfiguredPrefix() throws Exception {
+    void testInternalTargetWithConfiguredPrefix() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty(VanityUrlService.PN_VANITY_URL, "/ibmix");
         mockNode.setProperty(VanityUrlService.PN_LINK, "123-456-789");
@@ -67,7 +67,7 @@ public class SimplePublicUrlServiceTest {
     }
 
     @Test
-    public void testInternalTargetWithSlashEndingConfiguredPrefix() throws Exception {
+    void testInternalTargetWithSlashEndingConfiguredPrefix() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty(VanityUrlService.PN_VANITY_URL, "/ibmix");
         mockNode.setProperty(VanityUrlService.PN_LINK, "123-456-789");
@@ -78,7 +78,7 @@ public class SimplePublicUrlServiceTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         _service = new SimplePublicUrlService() {
             @Override
             public String getExternalLinkFromId(final String nodeId) {

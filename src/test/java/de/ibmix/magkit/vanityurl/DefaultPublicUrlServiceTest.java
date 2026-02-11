@@ -37,11 +37,11 @@ import static org.mockito.Mockito.when;
  * @author frank.sommer
  * @since 16.10.14
  */
-public class DefaultPublicUrlServiceTest {
+class DefaultPublicUrlServiceTest {
     private DefaultPublicUrlService _service;
 
     @Test
-    public void testExternalTarget() throws Exception {
+    void testExternalTarget() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty(PN_VANITY_URL, "/ibmix");
         mockNode.setProperty(PN_LINK, "http://www.ibmix.de");
@@ -51,7 +51,7 @@ public class DefaultPublicUrlServiceTest {
     }
 
     @Test
-    public void testInternalTarget() throws Exception {
+    void testInternalTarget() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty(PN_VANITY_URL, "/ibmix");
         mockNode.setProperty(PN_LINK, "123-456-789");
@@ -61,7 +61,7 @@ public class DefaultPublicUrlServiceTest {
     }
 
     @Test
-    public void testExternalTargetWithConfiguredTargetContextPath() throws Exception {
+    void testExternalTargetWithConfiguredTargetContextPath() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty(PN_VANITY_URL, "/ibmix");
         mockNode.setProperty(PN_LINK, "http://www.ibmix.de");
@@ -72,7 +72,7 @@ public class DefaultPublicUrlServiceTest {
     }
 
     @Test
-    public void testInternalTargetWithConfiguredTargetContextPath() throws Exception {
+    void testInternalTargetWithConfiguredTargetContextPath() throws Exception {
         MockNode mockNode = new MockNode("node");
         mockNode.setProperty(PN_VANITY_URL, "/ibmix");
         mockNode.setProperty(PN_LINK, "123-456-789");
@@ -83,7 +83,7 @@ public class DefaultPublicUrlServiceTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         _service = new DefaultPublicUrlService() {
             @Override
             public String getExternalLinkFromId(final String nodeId) {

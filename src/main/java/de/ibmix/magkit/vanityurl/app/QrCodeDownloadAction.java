@@ -72,7 +72,7 @@ public class QrCodeDownloadAction extends AbstractAction<ConfiguredActionDefinit
         }
     }
 
-    protected StreamResource getStreamResource(final Node node) {
+    private StreamResource getStreamResource(final Node node) {
         AttachmentStreamResource resource = null;
         try {
             if (node != null && node.hasNode(NN_IMAGE)) {
