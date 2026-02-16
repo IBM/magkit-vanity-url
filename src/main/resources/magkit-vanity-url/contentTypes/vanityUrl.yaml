@@ -1,6 +1,7 @@
 datasource:
+  $type: jcrContentTypeDatasource
   workspace: vanityUrls
-
+  autoCreate: true
 model:
   nodeType: mgnl:vanityUrl
   properties:
@@ -10,7 +11,10 @@ model:
     - name: linkSuffix
     - name: type
       options:
-        - value: 301
-        - value: 302
-        - value: forward
+        redirect301:
+          value: "301"
+        redirect302:
+          value: "302"
+        forward:
+          value: "forward"
     - name: description

@@ -49,15 +49,8 @@
             <name>ui-framework-jcr</name>
             <version>${version.magnolia}/*</version>
         </dependency>
+        <dependency>
+            <name>site</name>
+        </dependency>
     </dependencies>
-
-    <repositories>
-        <repository>
-            <name>magnolia</name>
-            <workspaces>
-                <workspace>vanityUrls</workspace>
-            </workspaces>
-            <nodeTypeFile>/mgnl-nodetypes/magkit-vanity-url-nodetypes.xml</nodeTypeFile>
-        </repository>
-    </repositories>
 </module>

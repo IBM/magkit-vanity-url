@@ -20,18 +20,18 @@ package de.ibmix.magkit.vanityurl.app;
  * #L%
  */
 
-import com.vaadin.server.Page;
 import com.vaadin.server.StreamResource;
+import com.vaadin.ui.UI;
 import de.ibmix.magkit.vanityurl.PreviewImageConfig;
 import info.magnolia.jcr.util.PropertyUtil;
 import info.magnolia.ui.ValueContext;
 import info.magnolia.ui.api.action.AbstractAction;
 import info.magnolia.ui.api.action.ConfiguredActionDefinition;
-import info.magnolia.ui.vaadin.server.DownloadStreamResource;
+import info.magnolia.ui.vaadin.server.AttachmentStreamResource;
+import jakarta.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
 import javax.jcr.Binary;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
@@ -67,13 +67,13 @@ public class QrCodeDownloadAction extends AbstractAction<ConfiguredActionDefinit
         if (_valueContext.getSingle().isPresent()) {
             StreamResource streamResource = getStreamResource(_valueContext.getSingle().get());
             if (streamResource != null) {
-                Page.getCurrent().open(streamResource, null, false);
+                UI.getCurrent().getPage().open(streamResource, null, false);
             }
         }
     }
 
-    protected StreamResource getStreamResource(final Node node) {
-        DownloadStreamResource resource = null;
+    private StreamResource getStreamResource(final Node node) {
+        AttachmentStreamResource resource = null;
         try {
             if (node != null && node.hasNode(NN_IMAGE)) {
                 Node binaryNode = node.getNode(NN_IMAGE);
@@ -81,7 +81,7 @@ public class QrCodeDownloadAction extends AbstractAction<ConfiguredActionDefinit
                 InputStream inputStream = binary.getStream();
                 final String mimeType = defaultIfEmpty(PropertyUtil.getString(binaryNode, PROPERTY_CONTENTTYPE), PreviewImageConfig.ImageType.SVG.getMimeType());
                 String fileName = getFileName(binaryNode, mimeType);
-                resource = new DownloadStreamResource((StreamResource.StreamSource) () -> inputStream, fileName);
+                resource = new AttachmentStreamResource((StreamResource.StreamSource) () -> inputStream, fileName);
 
                 // A negative value will disable caching of this stream.
                 resource.setCacheTime(-1);
