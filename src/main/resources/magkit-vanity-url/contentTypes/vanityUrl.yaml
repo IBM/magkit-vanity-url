@@ -1,6 +1,7 @@
 datasource:
+  $type: jcrContentTypeDatasource
   workspace: vanityUrls
-
+  autoCreate: true
 model:
   nodeType: mgnl:vanityUrl
   properties:
