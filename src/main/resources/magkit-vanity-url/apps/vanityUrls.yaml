@@ -2,14 +2,12 @@
 name: vanityUrls
 icon: icon-share
 label: vanityUrls.app.label
+datasource:
+  preview:
+    nodeName: qrCode
 subApps:
   browser:
     label: vanityUrls.app.label
-    datasource:
-      $type: jcrDatasource
-      workspace: vanityUrls
-      preview:
-        nodeName: qrCode
     actionbar:
       sections:
         item:
