@@ -1,8 +1,9 @@
 # Magnolia Vanity-URL App
 
 [![build-module](https://github.com/IBM/magkit-vanity-url/actions/workflows/build.yaml/badge.svg)](https://github.com/IBM/magkit-vanity-url/actions/workflows/build.yaml)
-[![Magnolia compatibility](https://img.shields.io/badge/magnolia-6.2-brightgreen.svg)](https://www.magnolia-cms.com)
+[![Magnolia compatibility](https://img.shields.io/badge/magnolia-6.4-brightgreen.svg)](https://www.magnolia-cms.com)
 [![Magnolia compatibility](https://img.shields.io/badge/magnolia-6.3-brightgreen.svg)](https://www.magnolia-cms.com)
+[![Magnolia compatibility](https://img.shields.io/badge/magnolia-6.2-brightgreen.svg)](https://www.magnolia-cms.com)
 
 ## Scope
 
