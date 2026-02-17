@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>de.ibmix.magkit</groupId>
@@ -8,7 +7,7 @@
         <version>1.1.0</version>
     </parent>
     <artifactId>magkit-vanity-url</artifactId>
-    <version>1.8.0-SNAPSHOT</version>
+    <version>1.8.0</version>
     <packaging>jar</packaging>
     <name>magkit-vanity-url Magnolia Module</name>
 
@@ -97,7 +96,7 @@
         <url>https://github.com/IBM/magkit-vanity-url.git</url>
         <connection>scm:git:https://github.com/IBM/magkit-vanity-url.git</connection>
         <developerConnection>scm:git:https://github.com/IBM/magkit-vanity-url.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>magkit-vanity-url-1.8.0</tag>
     </scm>
 
     <repositories>
