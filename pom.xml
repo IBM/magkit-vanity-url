@@ -106,10 +106,6 @@
             <url>https://nexus.magnolia-cms.com/content/groups/enterprise/</url>
         </repository>
         <repository>
-            <id>maven-sci</id>
-            <url>https://maven.scijava.org/content/repositories/public/</url>
-        </repository>
-        <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
