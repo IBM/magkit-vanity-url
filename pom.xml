@@ -83,6 +83,51 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>3.1.4</version>
+                <executions>
+                    <execution>
+                        <id>install-qrgen-pom</id>
+                        <phase>clean</phase>
+                        <configuration>
+                            <file>${basedir}/libs/qrgen-parent-3.0.1.pom</file>
+                            <pomFile>${basedir}/libs/qrgen-parent-3.0.1.pom</pomFile>
+                        </configuration>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>install-qrgen-core</id>
+                        <phase>clean</phase>
+                        <configuration>
+                            <file>${basedir}/libs/core-3.0.1.jar</file>
+                            <pomFile>${basedir}/libs/core-3.0.1.pom</pomFile>
+                        </configuration>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>install-qrgen-javase</id>
+                        <phase>clean</phase>
+                        <configuration>
+                            <file>${basedir}/libs/javase-3.0.1.jar</file>
+                            <pomFile>${basedir}/libs/javase-3.0.1.pom</pomFile>
+                        </configuration>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
     <profiles>
         <profile>
             <id>javadoc</id>
@@ -104,10 +149,6 @@
             <id>magnolia.enterprise</id>
             <name>Magnolia Enterprise Group</name>
             <url>https://nexus.magnolia-cms.com/content/groups/enterprise/</url>
-        </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 

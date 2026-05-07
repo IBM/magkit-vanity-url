@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.github.kenglxn.QRGen</groupId>
+    <artifactId>qrgen-parent</artifactId>
+    <version>3.0.1</version>
+  </parent>
+  <groupId>com.github.kenglxn.QRGen</groupId>
+  <artifactId>core</artifactId>
+  <version>3.0.1</version>
+  <name>QRGen-core</name>
+  <description>a simple QRCode generation api for java built on top ZXING</description>
+  <url>http://kenglxn.github.io/QRGen/</url>
+  <inceptionYear>2012</inceptionYear>
+  <licenses>
+    <license>
+      <name>Apache License v2</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>Ken Gullaksen</name>
+      <email>ken@glxn.net</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git@github.com:kenglxn/QRGen.git</connection>
+    <developerConnection>scm:git:git@github.com:kenglxn/QRGen.git</developerConnection>
+    <url>git@github.com:kenglxn/QRGen.git</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>com.google.zxing</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+</project>
