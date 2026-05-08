@@ -1,6 +1,6 @@
 !content-type:vanityUrl
 name: vanityUrls
-icon: icon-share
+icon: redirects-icon
 label: vanityUrls.app.label
 datasource:
   preview:
