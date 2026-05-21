@@ -22,7 +22,7 @@ You can browse available artifacts through [Magnolia's Nexus](https://nexus.magn
     <dependency>
         <artifactId>magkit-vanity-url</artifactId>
         <groupId>de.ibmix.magkit</groupId>
-        <version>1.8.0</version>
+        <version>1.8.1</version>
     </dependency>
 ```
 
